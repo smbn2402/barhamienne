@@ -1,0 +1,55 @@
+<!-- Modal d'ajout -->
+<div
+  class="modal fade"
+  id="horaireModal"
+  data-bs-backdrop="static"
+  data-bs-keyboard="false"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="horaireModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-dialog-centered modal-md" role="document">
+    <div class="modal-content">
+      <div class="modal-body p-0">
+        <div class="card mb-0">
+          <div class="card-header text-left">
+            <h3 class="fw-bolder text-info">{{caravane.trajet.libelle}}</h3>
+            <p class="mb-0">
+              <i class="far fa-clock pe-2"></i>{{ caravane.moment.libelle }} du
+              <app-date-format [date]="caravane.date"></app-date-format>
+            </p>
+          </div>
+          <div class="card-body">
+            <div class="table">
+              <table class="table table-striped">
+                <thead>
+                  <tr>
+                    <th>Heures de départ</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let depart of departs">
+                    <td>{{ depart.libelle }}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <div class="card-footer">
+            <button
+              type="button"
+              class="btn btn-dark float-start"
+              data-bs-dismiss="modal"
+            >
+              Fermer
+            </button>
+            <button type="button" class="btn btn-danger float-end">
+              Réserver
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,554 @@
+<app-header
+  [heroImageSrc]="'reservation.png'"
+  [heroTitle]="
+    'Réservation pour le ' +
+    (caravane.date | date : 'EEEE d MMMM' : undefined : 'fr-FR') +
+    ' (' +
+    caravane.moment.libelle +
+    ')'
+  "
+  [heroText]="
+    'Complétez vos informations pour réserver votre place. ' +
+    'Caravane vers ' +
+    caravane.trajet.libelle +
+    ' avec Barhamienne Transport.'
+  "
+></app-header>
+
+<section class="py-5 py-xl-8 bsb-section-py-xxl-1" *ngIf="caravane">
+  <div class="container mb-5 mb-md-6 mb-xl-10">
+    <div class="row justify-content-md-center">
+      <div class="col-12 col-md-10 col-lg-9 col-xl-8 col-xxl-7 text-center">
+        <h3 class="fs-6 text-secondary mb-2 text-uppercase">
+          Réservation vers
+        </h3>
+        <h2 class="display-5 fw-bold mb-0">
+          {{ caravane.trajet.libelle }} <br />
+          Le <app-date-format [date]="caravane.date"></app-date-format> -
+          {{ caravane.moment.libelle }}
+        </h2>
+      </div>
+    </div>
+  </div>
+
+  <div class="container overflow-hidden">
+    <div class="row gy-4 gy-xxl-5 gx-xxl-5 justify-content-center">
+      <div class="col-md-6 col-lg-4 col-lg-8">
+        <div class="service-39381">
+          <div class="card border border-dark border-3">
+            <div class="card-header pt-3 bg-black">
+              <div
+                class="d-flex align-items-center justify-content-between w-100 position-relative"
+              >
+                <div class="step-wrapper">
+                  <div class="step-icon" [class.active]="step >= 1">
+                    <i class="bi bi-person-vcard-fill"></i>
+                  </div>
+                  <!-- <p>Informations <br> personnelles</p> -->
+                </div>
+
+                <div class="step-line" [class.active]="step >= 2"></div>
+
+                <div class="step-wrapper">
+                  <div class="step-icon" [class.active]="step >= 2">
+                    <i class="bi bi-bus-front-fill"></i>
+                  </div>
+                  <!-- <p>Trajet et paiement</p> -->
+                </div>
+
+                <div class="step-line" [class.active]="step >= 3"></div>
+
+                <div class="step-wrapper">
+                  <div class="step-icon" [class.active]="step >= 3">
+                    <i class="bi bi-check-circle-fill"></i>
+                  </div>
+                  <!-- <p>Validation</p> -->
+                </div>
+
+                <div class="step-line" [class.active]="step >= 4"></div>
+
+                <div class="step-wrapper">
+                  <div class="step-icon" [class.active]="step >= 4">
+                    <i class="bi bi-currency-dollar"></i>
+                  </div>
+                  <!-- <p>Paiement</p> -->
+                </div>
+              </div>
+            </div>
+            <div class="card-body">
+              <form [formGroup]="form" (ngSubmit)="onSubmit()">
+                <!-- Étape 1 : Infos personnelles -->
+                <div *ngIf="step === 1" formGroupName="infos_perso">
+                  <!-- Prénom -->
+                  <div class="mb-3">
+                    <label for="firstName" class="form-label">Prénom</label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="firstName"
+                      formControlName="firstName"
+                      placeholder="Entrer le prénom du client"
+                    />
+                    <small
+                      class="text-danger"
+                      *ngIf="
+                        form.get('infos_perso.firstName')?.invalid &&
+                        form.get('infos_perso.firstName')?.touched
+                      "
+                    >
+                      ⚠ Le prénom est obligatoire et doit contenir au moins 2
+                      caractères.
+                    </small>
+                  </div>
+
+                  <!-- Nom -->
+                  <div class="mb-3">
+                    <label for="lastName" class="form-label">Nom</label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="lastName"
+                      formControlName="lastName"
+                      placeholder="Entrer le nom du client"
+                    />
+                    <small
+                      class="text-danger"
+                      *ngIf="
+                        form.get('infos_perso.lastName')?.invalid &&
+                        form.get('infos_perso.lastName')?.touched
+                      "
+                    >
+                      ⚠ Le nom est obligatoire et doit contenir au moins 2
+                      caractères.
+                    </small>
+                  </div>
+
+                  <!-- Téléphone -->
+                  <div class="mb-3">
+                    <label for="tel" class="form-label"
+                      >Numéro de téléphone</label
+                    >
+                    <input
+                      type="tel"
+                      class="form-control"
+                      id="tel"
+                      formControlName="tel"
+                      placeholder="Entrer le numéro de téléphone du client"
+                    />
+                    <small
+                      class="text-danger"
+                      *ngIf="
+                        form.get('infos_perso.tel')?.hasError('required') &&
+                        form.get('infos_perso.tel')?.touched
+                      "
+                    >
+                      ⚠ Le numéro de téléphone est obligatoire.
+                    </small>
+                    <small
+                      class="text-danger"
+                      *ngIf="
+                        form.get('infos_perso.tel')?.hasError('pattern') &&
+                        form.get('infos_perso.tel')?.touched
+                      "
+                    >
+                      ⚠ Format invalide. Exemple valide : 771234567.
+                    </small>
+                  </div>
+                  <button
+                    type="button"
+                    class="btn btn-dark"
+                    [routerLink]="['/']"
+                  >
+                    Annuler
+                  </button>
+                  <!-- <button
+                    type="button"
+                    class="btn btn-danger float-end"
+                    (click)="nextStep()"
+                    [disabled]="step === 1 && !form.get('infos_perso')?.valid"
+                  >
+                    Suivant
+                  </button> -->
+                  <button
+                    type="button"
+                    class="btn btn-danger float-end"
+                    (click)="nextStep()"
+                  >
+                    Suivant
+                  </button>
+                </div>
+
+                <!-- Étape 2 : Infos trajet -->
+                <div *ngIf="step === 2" formGroupName="trajet">
+                  <!-- Point de départ -->
+                  <div class="mb-3">
+                    <label for="depart" class="form-label"
+                      >Point de départ</label
+                    >
+                    <select
+                      id="depart"
+                      class="form-select"
+                      formControlName="depart"
+                    >
+                      <option value="">Choisissez votre point de départ</option>
+                      <option
+                        *ngFor="let item of departMoments"
+                        [value]="item.id"
+                      >
+                        {{ item.depart.libelle }} ({{ item.heureDepart }})
+                      </option>
+                    </select>
+                    <small
+                      class="text-danger"
+                      *ngIf="
+                        form.get('trajet.depart')?.invalid &&
+                        form.get('trajet.depart')?.touched
+                      "
+                    >
+                      ⚠ Veuillez choisir un point de départ.
+                    </small>
+                  </div>
+
+                  <!-- Point d'arrivée -->
+                  <div class="mb-3">
+                    <label for="arrivee" class="form-label"
+                      >Point d'arrivée</label
+                    >
+                    <select
+                      id="arrivee"
+                      class="form-select"
+                      formControlName="arrivee"
+                    >
+                      <option value="">Choisissez votre point d'arrivée</option>
+                      <option *ngFor="let item of arrivees" [value]="item.id">
+                        {{ item.libelle }}
+                      </option>
+                    </select>
+                    <small
+                      class="text-danger"
+                      *ngIf="
+                        form.get('trajet.arrivee')?.invalid &&
+                        form.get('trajet.arrivee')?.touched
+                      "
+                    >
+                      ⚠ Veuillez choisir un point d'arrivée.
+                    </small>
+                  </div>
+
+                  <button
+                    type="button"
+                    class="btn btn-dark"
+                    (click)="prevStep()"
+                  >
+                    Précédent
+                  </button>
+                  <!-- <button
+                    type="button"
+                    class="btn btn-danger float-end"
+                    (click)="nextStep()"
+                    [disabled]="step === 2 && !form.get('trajet')?.valid"
+                  >
+                    Suivant
+                  </button> -->
+                  <button
+                    type="button"
+                    class="btn btn-danger float-end"
+                    (click)="nextStep()"
+                  >
+                    Suivant
+                  </button>
+                </div>
+
+                <!-- Étape 3 : Confirmation -->
+                <div *ngIf="step === 3">
+                  <div class="mb-3">
+                    <label class="form-label">Prénom et nom</label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      [value]="
+                        form.get('infos_perso')?.value.firstName +
+                        ' ' +
+                        form.get('infos_perso')?.value.lastName
+                      "
+                      disabled
+                    />
+                  </div>
+
+                  <div class="mb-3">
+                    <label class="form-label">Numéro de téléphone</label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      [value]="form.get('infos_perso')?.value.tel"
+                      disabled
+                    />
+                  </div>
+
+                  <div class="mb-3">
+                    <label class="form-label">Lieu de départ</label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      [value]="getDepartLabel()"
+                      disabled
+                    />
+                  </div>
+
+                  <div class="mb-3">
+                    <label class="form-label">Lieu d'arrivée</label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      [value]="getArriveeLabel()"
+                      disabled
+                    />
+                  </div>
+
+                  <div class="mb-3">
+                    <label class="form-label">Prix du ticket</label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      [value]="caravane.prix"
+                      disabled
+                    />
+                  </div>
+
+                  <button
+                    type="button"
+                    class="btn btn-dark"
+                    (click)="prevStep()"
+                  >
+                    Précédent
+                  </button>
+                  <button
+                    type="button"
+                    class="btn btn-danger float-end"
+                    (click)="saveReservation()"
+                  >
+                    <span *ngIf="!isLoading">Valider</span>
+                    <span *ngIf="isLoading">
+                      <span
+                        class="spinner-border spinner-border-sm me-2"
+                        role="status"
+                        aria-hidden="true"
+                      ></span>
+                      Chargement...
+                    </span>
+                  </button>
+                </div>
+
+                <!-- Étape 4 : Paiement -->
+                <div *ngIf="step === 4">
+                  <div class="alert alert-success">
+                    {{ salutation }}
+                    {{ form.get("infos_perso")?.value.firstName }}
+                    {{ form.get("infos_perso")?.value.lastName }} , ✅ votre
+                    réservation a été enregistrée avec succès.
+                  </div>
+
+                  <!-- <div class="alert alert-warning">
+                    <h5>
+                      <img
+                        src="img/emoney/om_bg_black.png"
+                        alt="OM"
+                        width="30"
+                        height="30"
+                        class="rounded-circle me-2"
+                      />
+                      Paiement via Orange Money
+                    </h5>
+                    Envoyez <strong>{{ caravane.prix }} FCFA</strong> au numéro
+                    suivant : <strong>{{ caravane.telAgent }}</strong
+                    >.
+                  </div> -->
+
+                  <div class="alert alert-warning">
+                    <h5>
+                      <img
+                        src="img/emoney/om_bg_black.png"
+                        alt="OM"
+                        width="30"
+                        height="30"
+                        class="rounded-circle me-2"
+                      />
+                      Paiement via Orange Money
+                    </h5>
+                    Cliquez sur le bouton ci-dessous pour effectuer le paiement
+                    :
+                    <br />
+                    <button
+                      type="submit"
+                      class="btn mt-2 text-white bg-om"
+                      [disabled]="isOmLoading"
+                    >
+                      <span *ngIf="!isOmLoading">Payer avec OM</span>
+                      <span *ngIf="isOmLoading">
+                        <span
+                          class="spinner-border spinner-border-sm me-2"
+                          role="status"
+                          aria-hidden="true"
+                        ></span>
+                        Chargement...
+                      </span>
+                    </button>
+                  </div>
+
+                  <div class="alert alert-info">
+                    <h5>
+                      <img
+                        src="img/emoney/wave.png"
+                        alt="Wave"
+                        width="30"
+                        height="30"
+                        class="rounded-circle me-2"
+                      />
+                      Paiement via Wave
+                    </h5>
+                    Cliquez sur le bouton ci-dessous pour effectuer le paiement
+                    :
+                    <br />
+                    <a
+                      class="btn btn-info text-white mt-2"
+                      [href]="wave_launch_url + caravane.prix"
+                      target="_blank"
+                      disabled="isWaveLoading"
+                    >
+                      <span *ngIf="!isWaveLoading">Payer avec Wave</span>
+                      <span *ngIf="isWaveLoading">
+                        <span
+                          class="spinner-border spinner-border-sm me-2"
+                          role="status"
+                          aria-hidden="true"
+                        ></span>
+                        Chargement...
+                      </span>
+                    </a>
+                  </div>
+
+                  <p class="mt-3 text-danger">
+                    ⚠ Votre ticket sera validé après confirmation du paiement
+                    par nos services.
+                  </p>
+
+                  <!-- <button
+                    type="button"
+                    class="btn btn-dark"
+                    (click)="prevStep()"
+                  >
+                    Précédent
+                  </button> -->
+                  <button
+                    type="button"
+                    class="btn btn-success float-end"
+                    (click)="finish()"
+                  >
+                    Terminer
+                  </button>
+                </div>
+
+                <!-- Étape 5 : Paiement OM -->
+                <div *ngIf="step === 5">
+                  <div class="alert alert-warning">
+                    <h5>
+                      <img
+                        src="img/emoney/om_bg_black.png"
+                        alt="OM"
+                        width="30"
+                        height="30"
+                        class="rounded-circle me-2"
+                      />
+                      Paiement via Orange Money
+                    </h5>
+
+                    <div *ngIf="isMobile; else desktopPayment">
+                      <!-- Sur mobile : deux boutons MAX IT et OM -->
+                      <p>
+                        Choisissez une application pour effectuer votre paiement
+                        :
+                      </p>
+                      <div class="d-flex justify-content-around my-4">
+                        <div
+                          class="card p-2 text-center"
+                          [class.border-om]="selectedPayment === 'MAXIT'"
+                          (click)="selectedPayment = 'MAXIT'"
+                          style="cursor: pointer; width: 125px"
+                        >
+                          <img
+                            src="img/emoney/maxit.png"
+                            alt="MAX IT"
+                            class="img-fluid mx-auto d-block border shadow rounded-3"
+                            width="75"
+                            height="75"
+                          />
+                          <strong class="mt-2 d-block">MAX IT</strong>
+                        </div>
+
+                        <div
+                          class="card p-2 text-center"
+                          [class.border-om]="selectedPayment === 'OM'"
+                          (click)="selectedPayment = 'OM'"
+                          style="cursor: pointer; width: 125px"
+                        >
+                          <img
+                            src="img/emoney/om_bg_white.png"
+                            alt="OM"
+                            class="img-fluid mx-auto d-block border shadow rounded-3"
+                            width="75"
+                            height="75"
+                          />
+                          <strong class="mt-2 d-block">OM</strong>
+                        </div>
+                      </div>
+
+                      <div *ngIf="selectedPayment">
+                        <button
+                          class="btn w-100 mt-2 text-white bg-om"
+                          (click)="redirectToPayment()"
+                        >
+                          Payer avec {{ selectedPayment }}
+                        </button>
+                      </div>
+                    </div>
+
+                    <ng-template #desktopPayment>
+                      <!-- Sur desktop : afficher le QR Code -->
+                      <p>
+                        Scannez ce QR Code avec votre application Orange Money
+                        ou MAX IT :
+                      </p>
+                      <img
+                        [src]="'data:image/png;base64,' + qrCodeBase64"
+                        style="width: 300px"
+                        class="img-fluid mx-auto d-block"
+                      />
+                    </ng-template>
+                  </div>
+                  <p class="mt-3 text-danger">
+                    ⚠ Votre ticket sera validé après confirmation du paiement
+                    par nos services.
+                  </p>
+                  <button
+                    type="button"
+                    class="btn btn-dark"
+                    (click)="prevStep()"
+                  >
+                    Précédent
+                  </button>
+                  <button
+                    type="button"
+                    class="btn btn-success float-end"
+                    (click)="finish()"
+                  >
+                    Terminer
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

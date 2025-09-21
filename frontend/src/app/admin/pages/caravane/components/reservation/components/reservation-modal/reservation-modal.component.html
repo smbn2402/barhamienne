@@ -1,0 +1,119 @@
+<ng-template #reservationModal>
+  <form [formGroup]="form" (ngSubmit)="onSubmit()">
+    <!-- Prénom -->
+    <label>Prénom</label>
+    <div class="input-group mb-3">
+      <input
+        type="text"
+        class="form-control"
+        formControlName="prenom"
+        placeholder="Entrer le prénom du client"
+      />
+    </div>
+    <div
+      *ngIf="form.get('prenom')?.invalid && form.get('prenom')?.touched"
+      class="text-danger"
+    >
+      <small *ngIf="form.get('prenom')?.errors?.['required']">
+        ⚠ Le prénom est requis.
+      </small>
+      <small *ngIf="form.get('prenom')?.errors?.['minlength']">
+        ⚠ Le prénom doit comporter au moins 2 caractères.
+      </small>
+    </div>
+
+    <!-- Nom -->
+    <label>Nom</label>
+    <div class="input-group mb-3">
+      <input
+        type="text"
+        class="form-control"
+        formControlName="nom"
+        placeholder="Entrer le nom du client"
+      />
+    </div>
+    <div
+      *ngIf="form.get('nom')?.invalid && form.get('nom')?.touched"
+      class="text-danger"
+    >
+      <small *ngIf="form.get('nom')?.errors?.['required']">
+        ⚠ Le nom est requis.
+      </small>
+      <small *ngIf="form.get('nom')?.errors?.['minlength']">
+        ⚠ Le nom doit comporter au moins 2 caractères.
+      </small>
+    </div>
+
+    <!-- Téléphone -->
+    <label>Téléphone</label>
+    <div class="input-group mb-3">
+      <input
+        type="tel"
+        class="form-control"
+        formControlName="tel"
+        placeholder="Entrer le numéro de téléphone du client"
+      />
+    </div>
+    <div
+      *ngIf="form.get('tel')?.invalid && form.get('tel')?.touched"
+      class="text-danger"
+    >
+      <small *ngIf="form.get('tel')?.errors?.['required']">
+        ⚠ Le numéro de téléphone est requis.
+      </small>
+      <small *ngIf="form.get('tel')?.errors?.['pattern']">
+        ⚠ Le numéro de téléphone est invalide.
+      </small>
+    </div>
+
+    <!-- Point de départ -->
+    <label>Point de départ</label>
+    <div class="input-group mb-3">
+      <select class="form-control" formControlName="departMomentId">
+        <option value="">Choisissez votre point de départ</option>
+        <option *ngFor="let item of departMoments" [value]="item.id">
+          {{ item.depart.libelle }}
+        </option>
+      </select>
+    </div>
+
+    <!-- Point d'arrivée -->
+    <label>Point d'arrivée</label>
+    <div class="input-group mb-3">
+      <select class="form-control" formControlName="arriveeId">
+        <option value="">Choisissez votre point d'arrivée</option>
+        <option *ngFor="let item of arrivees" [value]="item.id">
+          {{ item.libelle }}
+        </option>
+      </select>
+    </div>
+
+    <!-- Statut -->
+    <label>Statut</label>
+    <div class="input-group mb-3">
+      <select class="form-control" formControlName="statut">
+        <option value="">Choisissez le statut de la réservation</option>
+        <option value="EN_ATTENTE">EN_ATTENTE</option>
+        <option value="CONFIRMEE">CONFIRMEE</option>
+        <option value="ANNULEE">ANNULEE</option>
+      </select>
+    </div>
+  </form>
+</ng-template>
+
+<app-generic-modal
+  [modalId]="'genericModal'"
+  [title]="
+    isEditMode ? 'Modifier une réservation' : 'Ajouter une réservation'
+  "
+  [description]="
+    isEditMode
+      ? 'Modifier les informations de la réservation'
+      : 'Entrez les informations de la réservation'
+  "
+  [button]="isEditMode ? 'Mettre à jour' : 'Enregistrer'"
+  [formTemplate]="reservationModal"
+  [isFormValid]="formValid"
+  (confirm)="onSubmit()"
+  (close)="closeModal()"
+></app-generic-modal>

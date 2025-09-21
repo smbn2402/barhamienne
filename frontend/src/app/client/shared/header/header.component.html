@@ -1,0 +1,175 @@
+<header id="header">
+  <!-- Navbar 1 - Bootstrap Brain Component -->
+  <nav
+    class="navbar navbar-expand-lg bsb-navbar bsb-navbar-hover bsb-navbar-caret bsb-tpl-navbar-float bsb-tpl-navbar-sticky"
+    data-bs-theme="dark"
+    data-bsb-stuck-bg="bg-primary"
+    data-bsb-stuck-theme="dark"
+  >
+    <div class="container">
+      <a
+        type="button"
+        class="navbar-brand"
+        (click)="onNavigate('/')"
+        [ngClass]="{
+          'text-danger': isActive('/'),
+          'text-white': !isActive('/')
+        }"
+      >
+        <img
+          src="img/logo.png"
+          class="bsb-tpl-logo"
+          alt="Barhamienne Transport"
+        />
+      </a>
+      <button
+        class="navbar-toggler border-0"
+        type="button"
+        data-bs-toggle="offcanvas"
+        data-bs-target="#offcanvasNavbar"
+        aria-controls="offcanvasNavbar"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="24"
+          height="24"
+          fill="currentColor"
+          class="bi bi-list"
+          viewBox="0 0 16 16"
+        >
+          <path
+            fill-rule="evenodd"
+            d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5z"
+          />
+        </svg>
+      </button>
+
+      <div
+        class="offcanvas offcanvas-end bg-black"
+        tabindex="-1"
+        id="offcanvasNavbar"
+        #offcanvasNavbar
+        aria-labelledby="offcanvasNavbarLabel"
+      >
+        <div class="offcanvas-header">
+          <h5 class="offcanvas-title" id="offcanvasNavbarLabel">Menu</h5>
+          <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="offcanvas"
+            aria-label="Close"
+          ></button>
+        </div>
+        <div class="offcanvas-body">
+          <ul class="navbar-nav justify-content-end flex-grow-1">
+            <li class="nav-item">
+              <a
+                type="button"
+                class="nav-link"
+                (click)="onNavigate('/')"
+                [ngClass]="{
+                  'text-danger': isActive('/'),
+                  'text-white': !isActive('/')
+                }"
+              >
+                Accueil
+              </a>
+            </li>
+            <li class="nav-item">
+              <a
+                type="button"
+                class="nav-link"
+                (click)="onNavigate('/reservation')"
+                [ngClass]="{
+                  'text-danger': isActive('/reservation'),
+                  'text-white': !isActive('/reservation')
+                }"
+              >
+                Réservation
+              </a>
+            </li>
+            <li class="nav-item">
+              <a
+                type="button"
+                class="nav-link"
+                (click)="onNavigate('/yobante')"
+                [ngClass]="{
+                  'text-danger': isActive('/yobante'),
+                  'text-white': !isActive('/yobante')
+                }"
+              >
+                Yobanté
+              </a>
+            </li>
+            <li class="nav-item">
+              <a
+                type="button"
+                class="nav-link"
+                (click)="onNavigate('/horaire')"
+                [ngClass]="{
+                  'text-danger': isActive('/horaire'),
+                  'text-white': !isActive('/horaire')
+                }"
+              >
+                Horaires
+              </a>
+            </li>
+            <li class="nav-item">
+              <a
+                type="button"
+                class="nav-link"
+                (click)="onNavigate('/contact')"
+                [ngClass]="{
+                  'text-danger': isActive('/contact'),
+                  'text-white': !isActive('/contact')
+                }"
+              >
+                Contact
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Hero 4 - Bootstrap Brain Component -->
+  <section class="bg-black" data-bs-theme="dark">
+    <div class="container-fluid overflow-hidden">
+      <div class="row">
+        <div class="col-12 col-md-6 order-1 order-md-0 align-self-md-end">
+          <div
+            class="row py-3 py-sm-5 py-xl-9 bsb-section-mt-md-1 justify-content-sm-center"
+          >
+            <div class="col-12 col-sm-10">
+              <h1
+                class="display-5 fw-bolder mb-4 text-white"
+                [innerHTML]="heroTitle"
+              ></h1>
+              <div class="row">
+                <div class="col-12 col-xxl-8">
+                  <p class="fs-5 mb-5 text-secondary">
+                    {{ heroText }}
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-12 col-md-6 p-0">
+          <figure
+            class="bsb-overlay-figure w-100 h-100 m-0"
+            style="--bsb-overlay-figure-opacity: 0.3"
+          >
+            <img
+              class="img-fluid w-100 h-100 object-fit-cover"
+              loading="eager"
+              [src]="'img/hero/' + heroImageSrc"
+              alt=""
+            />
+          </figure>
+        </div>
+      </div>
+    </div>
+  </section>
+</header>

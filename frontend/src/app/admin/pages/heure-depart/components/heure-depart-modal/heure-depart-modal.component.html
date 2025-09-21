@@ -1,0 +1,57 @@
+<ng-template #heureDepartModal>
+  <form [formGroup]="form" (ngSubmit)="onSubmit()">
+    <div class="mb-3">
+      <label for="depart" class="form-label">Point de départ</label>
+      <select id="depart" class="form-select" formControlName="depart">
+        <option value="">Choisissez un point de départ</option>
+        <option *ngFor="let item of deprts" [value]="item.id">
+          {{ item.libelle }}
+        </option>
+      </select>
+      <small
+        class="text-danger"
+        *ngIf="
+          form.get('depart')?.invalid && form.get('depart')?.touched
+        "
+      >
+        ⚠ Veuillez choisir un point de départ.
+      </small>
+    </div>
+    <div class="mb-3">
+      <label for="heureDepart" class="form-label">Heure de départ</label>
+      <input
+        type="time"
+        class="form-control"
+        id="heureDepart"
+        formControlName="heureDepart"
+        placeholder="Entrer l'heure de départ point de départ"
+      />
+      <small
+        class="text-danger"
+        *ngIf="
+          form.get('heureDepart')?.invalid && form.get('heureDepart')?.touched
+        "
+      >
+        ⚠ L'heure de départ est obligatoire et doit contenir au moins 2
+        caractères.
+      </small>
+    </div>
+  </form>
+</ng-template>
+
+<app-generic-modal
+  [modalId]="'addModal'"
+  [title]="
+    isEditMode ? 'Modifier un point de départ' : 'Ajouter un point de départ'
+  "
+  [description]="
+    isEditMode
+      ? 'Modifier les informations du point de'
+      : 'Entrez les informations du point de départ'
+  "
+  [button]="isEditMode ? 'Mettre à jour' : 'Enregistrer'"
+  [formTemplate]="heureDepartModal"
+  [isFormValid]="formValid"
+  (confirm)="addDepartMoment()"
+  (close)="closeModal()"
+></app-generic-modal>

@@ -1,0 +1,150 @@
+<div class="page-inner">
+  <app-breadcrumbs
+    [title]="'Yobantés'"
+    [breadcrumbs]="[
+      {
+        label: 'Caravanes',
+        url: '/admin/caravanes/' + caravane.trajet.id + '/' + caravane.moment.id
+      },
+      {
+        label:
+          caravane && caravane.trajet.libelle ? caravane.trajet.libelle : '',
+        url: '/admin/caravanes/' + caravane.trajet.id + '/' + caravane.moment.id
+      },
+      {
+        label:
+          caravane && caravane.moment.libelle ? caravane.moment.libelle : '',
+        url: '/admin/caravanes/' + caravane.trajet.id + '/' + caravane.moment.id
+      },
+      { label: 'Yobantés' }
+    ]"
+  ></app-breadcrumbs>
+  <div class="row">
+    <div class="col-md-12">
+      <div class="card">
+        <div class="card-header">
+          <div class="d-flex align-items-center">
+            <h4 class="card-title col">
+              Yobantés pour
+              <app-date-format [date]="caravane.date"></app-date-format>
+              {{ caravane.moment.libelle }}
+            </h4>
+            <button
+              class="btn btn-black btn-lg btn-md btn-sm btn-round ms-3"
+              data-bs-toggle="dropdown"
+              href="#"
+            >
+              <i class="fa fa-bars"></i>
+              Menu
+            </button>
+            <ul class="dropdown-menu">
+              <li>
+                <a
+                  class="dropdown-item"
+                  href="#"
+                  data-bs-toggle="modal"
+                  data-bs-target="#genericModal"
+                  ><i class="fa fa-car"></i> Ajouter un yobanté
+                </a>
+                <!-- <div class="dropdown-divider"></div>
+                <a
+                  class="dropdown-item"
+                  href="#"
+                  data-bs-toggle="modal"
+                  data-bs-target="#messageModal"
+                  ><i class="fa fa-email"></i> Envoyer message</a
+                > -->
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div class="card-body">
+          <app-yobante-modal
+            [isEditMode]="isEditMode"
+            [newYobante]="selectedYobante"
+            [caravane]="caravane"
+            [departMoments]="departMoments"
+            [caravanes]="caravanes"
+            (onAdd)="isEditMode ? handleUpdate($event) : handleAdd($event)"
+          >
+          </app-yobante-modal>
+
+          <!-- <div *ngIf="isLoading" class="text-center my-4">
+            <div class="spinner-border text-danger" role="status">
+              <span class="visually-hidden">Chargement...</span>
+            </div>
+            <p class="mt-2">Chargement des yobantés...</p>
+          </div> -->
+
+          <div class="row">
+            <div class="table-responsive">
+              <table
+                datatable
+                [dtOptions]="dtOptions"
+                [dtTrigger]="dtTrigger"
+                class="table table-bordered table-head-bg-black table-striped table-hover"
+              >
+                <thead>
+                  <tr>
+                    <th>#</th>
+                    <th>Prénom Exp</th>
+                    <th>Nom Exp</th>
+                    <th>Numéro Exp</th>
+                    <th>Type de colis</th>
+                    <th>Date</th>
+                    <th>Lieu dépôt</th>
+                    <th>Lieu retrait</th>
+                    <th>Prénom Dest</th>
+                    <th>Nom Dest</th>
+                    <th>Numéro Dest</th>
+                    <th style="width: 10%">Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let yobante of yobantes; let i = index">
+                    <td>{{ i + 1 }}</td>
+                    <td>{{ yobante.prenomExp }}</td>
+                    <td>{{ yobante.nomExp }}</td>
+                    <td>{{ yobante.telExp }}</td>
+                    <td>{{ yobante.typeColis }}</td>
+                    <td>
+                      {{ yobante.caravane.moment.libelle }} du
+                      <app-date-format
+                        [date]="yobante.caravane.date"
+                      ></app-date-format>
+                    </td>
+                    <td>{{ yobante.departMoment.depart.libelle }}</td>
+                    <td>{{ yobante.retrait }}</td>
+                    <td>{{ yobante.prenomDest }}</td>
+                    <td>{{ yobante.nomDest }}</td>
+                    <td>{{ yobante.telDest }}</td>
+                    <td>
+                      <div class="d-flex justify-content-center">
+                        <button
+                          type="button"
+                          class="btn btn-sm btn-warning me-1"
+                          (click)="selecteYobante(yobante, 'genericModal')"
+                          data-original-title="Update"
+                        >
+                          <i class="fa fa-edit"></i>
+                        </button>
+                        <button
+                          type="button"
+                          class="btn btn-sm btn-danger"
+                          data-original-title="Remove"
+                          (click)="handleDelete(yobante)"
+                        >
+                          <i class="fa fa-trash"></i>
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

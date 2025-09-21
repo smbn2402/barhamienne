@@ -1,0 +1,412 @@
+<app-header
+  [heroImageSrc]="'colis.png'"
+  [heroTitle]="'Yobanté-Envoi de Colis'"
+  [heroText]="
+    'Envoyez et recevez vos colis en toute sécurité avec Yobanté. Suivez les étapes simples pour préparer votre envoi.'
+  "
+></app-header>
+<section class="py-5 py-xl-8 bsb-section-py-xxl-1">
+  <div class="container mb-5 mb-md-6 mb-xl-10">
+    <div class="row justify-content-md-center">
+      <div class="col-12 col-md-10 col-lg-9 col-xl-8 col-xxl-7 text-center">
+        <h3 class="fs-6 text-secondary mb-2 text-uppercase">Yobanté</h3>
+        <h2 class="display-4 fw-bold mb-0">
+          Suivez les étapes pour envoyer votre colis
+        </h2>
+      </div>
+    </div>
+  </div>
+
+  <div class="container overflow-hidden">
+    <div class="row gy-4 gy-xxl-5 gx-xxl-5 justify-content-center">
+      <div class="col-md-6 col-lg-4 col-lg-8">
+        <div class="service-39381">
+          <div class="card border border-dark border-3">
+            <div class="card-header pt-3 bg-black">
+              <!-- Indicateur d'étape avec icônes -->
+              <div class="d-flex justify-content-center">
+                <div class="step-icon" [class.active]="step === 1">
+                  <i class="bi bi-person-vcard-fill"></i>
+                  <p>Expéditeur</p>
+                </div>
+                <div class="step-icon" [class.active]="step === 2">
+                  <i class="bi bi-cart-dash-fill"></i>
+                  <p>Colis</p>
+                </div>
+                <div class="step-icon" [class.active]="step === 3">
+                  <i class="bi bi-person-square"></i>
+                  <p>Destinataire</p>
+                </div>
+                <div class="step-icon" [class.active]="step === 4">
+                  <i class="bi bi-check-circle-fill"></i>
+                  <p>Validation</p>
+                </div>
+              </div>
+            </div>
+            <div class="card-body">
+              <!-- Barre de progression -->
+              <!-- <div class="progress mb-4">
+                <div
+                  class="progress-bar"
+                  role="progressbar"
+                  [style.width]="step * 25 + '%'"
+                  aria-valuemin="0"
+                  aria-valuemax="100"
+                ></div>
+              </div> -->
+
+              <form [formGroup]="form" (ngSubmit)="onSubmit()">
+                <!-- Étape 1 : Expéditeur -->
+                <div *ngIf="step === 1" formGroupName="expediteur">
+                  <div class="mb-3">
+                    <label for="firstName" class="form-label">Prénom</label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="firstName"
+                      formControlName="firstName"
+                      placeholder="Entrer le prénom de l'expéditeur"
+                    />
+                    <small
+                      class="text-danger"
+                      *ngIf="
+                        form.get('expediteur.firstName')?.invalid &&
+                        form.get('expediteur.firstName')?.touched
+                      "
+                    >
+                      ⚠ Le prénom est obligatoire et doit contenir au moins 2
+                      caractères.
+                    </small>
+                  </div>
+                  <div class="mb-3">
+                    <label for="lastName" class="form-label">Nom</label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="lastName"
+                      formControlName="lastName"
+                      placeholder="Entrer le nom de l'expéditeur"
+                    />
+                    <small
+                      class="text-danger"
+                      *ngIf="
+                        form.get('expediteur.lastName')?.invalid &&
+                        form.get('expediteur.lastName')?.touched
+                      "
+                    >
+                      ⚠ Le nom est obligatoire et doit contenir au moins 2
+                      caractères.
+                    </small>
+                  </div>
+                  <div class="mb-3">
+                    <label for="tel" class="form-label">Téléphone</label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="tel"
+                      formControlName="tel"
+                      placeholder="Téléphone expéditeur"
+                    />
+                    <small
+                      class="text-danger"
+                      *ngIf="
+                        form.get('expediteur.tel')?.hasError('required') &&
+                        form.get('expediteur.tel')?.touched
+                      "
+                    >
+                      ⚠ Le numéro de téléphone est obligatoire.
+                    </small>
+                    <small
+                      class="text-danger"
+                      *ngIf="
+                        form.get('expediteur.tel')?.hasError('pattern') &&
+                        form.get('expediteur.tel')?.touched
+                      "
+                    >
+                      ⚠ Format invalide. Exemple valide : 771234567.
+                    </small>
+                  </div>
+                  <button
+                    type="button"
+                    class="btn btn-danger float-end"
+                    (click)="nextStep()"
+                  >
+                    Suivant
+                  </button>
+                </div>
+
+                <!-- Étape 2 : Colis -->
+                <div *ngIf="step === 2" formGroupName="colis">
+                  <div class="mb-3">
+                    <label for="type_colis" class="form-label"
+                      >Type de colis</label
+                    >
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="type_colis"
+                      formControlName="type_colis"
+                      placeholder="Ex: Téléphone, Ordinateur..."
+                    />
+                    <small
+                      class="text-danger"
+                      *ngIf="
+                        form.get('colis.type_colis')?.invalid &&
+                        form.get('colis.type_colis')?.touched
+                      "
+                    >
+                      ⚠ La nature du colis est obligatoire et doit contenir au
+                      moins 2 caractères.
+                    </small>
+                  </div>
+                  <div class="mb-3">
+                    <label for="trajet" class="form-label">Trajet</label>
+                    <select
+                      id="trajet"
+                      class="form-select"
+                      formControlName="trajet"
+                    >
+                      <option value="">Choisissez un trajet</option>
+                      <option *ngFor="let item of trajets" [value]="item.id">
+                        {{ item.libelle }}
+                      </option>
+                    </select>
+                    <small
+                      class="text-danger"
+                      *ngIf="
+                        form.get('caravane')?.invalid &&
+                        form.get('caravane')?.touched
+                      "
+                    >
+                      ⚠ Veuillez choisir un trajet.
+                    </small>
+                  </div>
+                  <div class="mb-3">
+                    <label for="caravane" class="form-label">Date</label>
+                    <select
+                      id="caravane"
+                      class="form-select"
+                      formControlName="caravane"
+                    >
+                      <option value="">Choisissez une date</option>
+                      <option *ngFor="let item of caravanes" [value]="item.id">
+                        {{ item.moment.libelle }} du
+                        {{ this.formattedDate(item.date) }}
+                      </option>
+                    </select>
+                    <small
+                      class="text-danger"
+                      *ngIf="
+                        form.get('colis.caravane')?.invalid &&
+                        form.get('colis.caravane')?.touched
+                      "
+                    >
+                      ⚠ Veuillez choisir une date.
+                    </small>
+                  </div>
+                  <div class="mb-3">
+                    <label for="depot" class="form-label">Lieu de dépôt</label>
+                    <select
+                      id="depot"
+                      class="form-select"
+                      formControlName="depot"
+                    >
+                      <option value="">Choisissez votre lieu de dépôt</option>
+                      <option
+                        *ngFor="let item of departMoments"
+                        [value]="item.id"
+                      >
+                        {{ item.depart.libelle }} ({{ item.heureDepart }})
+                      </option>
+                    </select>
+                    <small
+                      class="text-danger"
+                      *ngIf="
+                        form.get('colis.depot')?.invalid &&
+                        form.get('colis.depot')?.touched
+                      "
+                    >
+                      ⚠ Veuillez choisir votre lieu de dépôt.
+                    </small>
+                  </div>
+                  <div class="mb-3">
+                    <label for="retrait" class="form-label"
+                      >Lieu de retrait</label
+                    >
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="retrait"
+                      formControlName="retrait"
+                    />
+                  </div>
+                  <button
+                    type="button"
+                    class="btn btn-dark"
+                    (click)="prevStep()"
+                  >
+                    Précédent
+                  </button>
+                  <button
+                    type="button"
+                    class="btn btn-danger float-end"
+                    (click)="nextStep()"
+                  >
+                    Suivant
+                  </button>
+                </div>
+
+                <!-- Étape 3 : Destinataire -->
+                <div *ngIf="step === 3" formGroupName="destinataire">
+                  <div class="mb-3">
+                    <label for="firstName" class="form-label">Prénom</label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="firstName"
+                      formControlName="firstName"
+                      placeholder="Prénom du destinataire"
+                    />
+                    <small
+                      class="text-danger"
+                      *ngIf="
+                        form.get('destinataire.firstName')?.invalid &&
+                        form.get('destinataire.firstName')?.touched
+                      "
+                    >
+                      ⚠ Le prénom est obligatoire et doit contenir au moins 2
+                      caractères.
+                    </small>
+                  </div>
+                  <div class="mb-3">
+                    <label for="lastName" class="form-label">Nom</label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="lastName"
+                      formControlName="lastName"
+                      placeholder="Nom du destinataire"
+                    />
+                    <small
+                      class="text-danger"
+                      *ngIf="
+                        form.get('destinataire.lastName')?.invalid &&
+                        form.get('destinataire.lastName')?.touched
+                      "
+                    >
+                      ⚠ Le nom est obligatoire et doit contenir au moins 2
+                      caractères.
+                    </small>
+                  </div>
+                  <div class="mb-3">
+                    <label for="tel" class="form-label">Téléphone</label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="tel"
+                      formControlName="tel"
+                      placeholder="Téléphone du destinataire"
+                    />
+                    <small
+                      class="text-danger"
+                      *ngIf="
+                        form.get('destinataire.tel')?.hasError('required') &&
+                        form.get('destinataire.tel')?.touched
+                      "
+                    >
+                      ⚠ Le numéro de téléphone est obligatoire.
+                    </small>
+                    <small
+                      class="text-danger"
+                      *ngIf="
+                        form.get('destinataire.tel')?.hasError('pattern') &&
+                        form.get('destinataire.tel')?.touched
+                      "
+                    >
+                      ⚠ Format invalide. Exemple valide : 771234567.
+                    </small>
+                  </div>
+                  <button
+                    type="button"
+                    class="btn btn-dark"
+                    (click)="prevStep()"
+                  >
+                    Précédent
+                  </button>
+                  <button
+                    type="button"
+                    class="btn btn-danger float-end"
+                    (click)="nextStep()"
+                  >
+                    Suivant
+                  </button>
+                </div>
+
+                <!-- Étape 4 : Validation -->
+                <div *ngIf="step === 4">
+                  <div class="mb-3">
+                    <label class="form-label">Expéditeur</label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      [value]="
+                        form.value.expediteur.firstName +
+                        ' ' +
+                        form.value.expediteur.lastName +
+                        ' (' +
+                        form.value.expediteur.tel +
+                        ')'
+                      "
+                      disabled
+                    />
+                  </div>
+                  <div class="mb-3">
+                    <label class="form-label">Colis</label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      [value]="
+                        form.value.colis.type_colis +
+                        ' ' +
+                        form.value.colis.depot +
+                        ' ' +
+                        form.getRawValue().colis.retrait
+                      "
+                      disabled
+                    />
+                  </div>
+                  <div class="mb-3">
+                    <label class="form-label">Destinataire</label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      [value]="
+                        form.value.destinataire.firstName +
+                        ' ' +
+                        form.value.destinataire.lastName +
+                        ' (' +
+                        form.value.destinataire.tel +
+                        ')'
+                      "
+                      disabled
+                    />
+                  </div>
+                  <button
+                    type="button"
+                    class="btn btn-dark"
+                    (click)="prevStep()"
+                  >
+                    Précédent
+                  </button>
+                  <button type="submit" class="btn btn-success float-end">
+                    Soumettre
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

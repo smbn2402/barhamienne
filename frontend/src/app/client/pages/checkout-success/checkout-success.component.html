@@ -1,0 +1,91 @@
+<app-header
+  [heroImageSrc]="'success.png'"
+  [heroTitle]="'Paiement réussi'"
+  [heroText]="
+    'Merci pour votre confiance, votre ticket est en cours de traitement.'
+  "
+/>
+
+<section class="py-5 py-xl-8 bsb-section-py-xxl-1">
+  <div class="container mb-5 mb-md-6 mb-xl-10">
+    <div class="row justify-content-md-center">
+      <div class="col-12 col-md-10 col-lg-9 col-xl-8 col-xxl-7 text-center">
+        <h3 class="fs-6 text-secondary mb-2 text-uppercase">
+          Paiement confirmé !
+        </h3>
+        <h2 class="display-5 fw-bold mb-0">
+          Vous recevrez un SMS de confirmation dans quelques instants.
+        </h2>
+      </div>
+    </div>
+  </div>
+
+  <div class="container overflow-hidden">
+    <div class="row gy-4 gy-xxl-5 gx-xxl-5 justify-content-center">
+      <div class="col-md-6 col-lg-4 col-lg-8">
+        <div class="service-39381">
+          <div
+            class="card"
+            *ngIf="reservation && reservation.client && reservation.caravane"
+          >
+            <div class="card-header pt-3 bg-black text-white text-center">
+              Détails de votre réservation
+            </div>
+            <ul class="list-group list-group-flush">
+              <li class="list-group-item">
+                <strong>Nom : </strong> {{ reservation.client.prenom }}
+                {{ reservation.client.nom }}
+              </li>
+              <li class="list-group-item">
+                <strong>Téléphone :</strong> {{ reservation.client.tel }}
+              </li>
+              <li class="list-group-item">
+                <strong>Trajet :</strong>
+                {{ reservation.caravane.trajet.libelle }}
+              </li>
+              <li class="list-group-item">
+                <strong>Rendez-vous :</strong>
+                {{ reservation.departMoment.depart.libelle }} à
+                {{ reservation.departMoment.heureDepart }}
+              </li>
+              <li class="list-group-item">
+                <strong>Date</strong> :
+                <app-date-format
+                  [date]="reservation.caravane.date"
+                ></app-date-format>
+                - {{ reservation.caravane.moment.libelle }}
+              </li>
+              <li
+                class="list-group-item"
+                *ngIf="reservation.paiements!.length > 0"
+              >
+                Montant :
+                <strong
+                  >{{
+                    reservation.paiements![reservation.paiements!.length - 1]
+                      .montant
+                  }}
+                  FCFA</strong
+                >
+              </li>
+              <li class="list-group-item">
+                <strong>Paiement :</strong>
+                Effectué avec succès ✅
+              </li>
+            </ul>
+
+            <div class="card-body text-center">
+              <a
+                [routerLink]="['/']"
+                class="btn btn-dark bg-black px-4"
+                routerLinkActive="router-link-active"
+              >
+                Retour à l'accueil
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

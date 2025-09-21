@@ -1,0 +1,107 @@
+<ng-template #utilisateurModal>
+  <form [formGroup]="form" (ngSubmit)="onSubmit()">
+    <!-- Nom -->
+    <label>Nom</label>
+    <div class="input-group mb-3">
+      <input
+        type="text"
+        class="form-control"
+        formControlName="name"
+        placeholder="Entrer le nom complet de l'utilisateur"
+      />
+    </div>
+    <div
+      *ngIf="form.get('name')?.invalid && form.get('name')?.touched"
+      class="text-danger"
+    >
+      <small *ngIf="form.get('name')?.errors?.['required']">
+        ⚠ Le nom est requis.
+      </small>
+      <small *ngIf="form.get('name')?.errors?.['minlength']">
+        ⚠ Le nom doit comporter au moins 2 caractères.
+      </small>
+    </div>
+
+    <!-- Email -->
+    <label>Email</label>
+    <div class="input-group mb-3">
+      <input
+        type="text"
+        class="form-control"
+        formControlName="email"
+        placeholder="Entrer l'email de l'utilisateur"
+      />
+    </div>
+    <div
+      *ngIf="form.get('email')?.invalid && form.get('email')?.touched"
+      class="text-danger"
+    >
+      <small *ngIf="form.get('email')?.errors?.['required']">
+        ⚠ L'email est requis.
+      </small>
+      <small *ngIf="form.get('email')?.errors?.['minlength']">
+        ⚠ L'email doit comporter au moins 2 caractères.
+      </small>
+    </div>
+
+    <!-- Téléphone -->
+    <label>Téléphone</label>
+    <div class="input-group mb-3">
+      <input
+        type="phone"
+        class="form-control"
+        formControlName="phone"
+        placeholder="Entrer le numéro de téléphone de l'utilisateur"
+      />
+    </div>
+    <div
+      *ngIf="form.get('phone')?.invalid && form.get('phone')?.touched"
+      class="text-danger"
+    >
+      <small *ngIf="form.get('phone')?.errors?.['required']">
+        ⚠ Le numéro de téléphone est requis.
+      </small>
+      <small *ngIf="form.get('phone')?.errors?.['pattern']">
+        ⚠ Le numéro de téléphone est invalide.
+      </small>
+    </div>
+    <!-- Rôles -->
+    <label>Rôles</label>
+    <div class="mb-3">
+      <div *ngFor="let role of roles; let i = index" class="form-check">
+        <input
+          type="checkbox"
+          class="form-check-input"
+          [formControl]="rolesFormArray.controls[i]"
+          [id]="'role_' + i"
+        />
+        <label class="form-check-label" [for]="'role_' + i">
+          {{ role.name }}
+        </label>
+      </div>
+    </div>
+    <div
+      *ngIf="form.get('roles')?.invalid && form.get('roles')?.touched"
+      class="text-danger"
+    >
+      <small *ngIf="form.get('roles')?.errors?.['required']">
+        ⚠ Au moins un rôle est requis.
+      </small>
+    </div>
+  </form>
+</ng-template>
+
+<app-generic-modal
+  [modalId]="'genericModal'"
+  [title]="isEditMode ? 'Modifier un utilisateur' : 'Ajouter un utilisateur'"
+  [description]="
+    isEditMode
+      ? 'Modifier les informations du utilisateur'
+      : 'Entrez les informations du utilisateur'
+  "
+  [button]="isEditMode ? 'Mettre à jour' : 'Enregistrer'"
+  [formTemplate]="utilisateurModal"
+  [isFormValid]="formValid"
+  (confirm)="onSubmit()"
+  (close)="closeModal()"
+></app-generic-modal>

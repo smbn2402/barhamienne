@@ -1,0 +1,57 @@
+<ng-template #heureArriveeModal>
+  <form [formGroup]="form" (ngSubmit)="onSubmit()">
+    <div class="mb-3">
+      <label for="arrivee" class="form-label">Point d'arrivée</label>
+      <select id="arrivee" class="form-select" formControlName="arrivee">
+        <option value="">Choisissez un point d'arrivée</option>
+        <option *ngFor="let item of deprts" [value]="item.id">
+          {{ item.libelle }}
+        </option>
+      </select>
+      <small
+        class="text-danger"
+        *ngIf="
+          form.get('arrivee')?.invalid && form.get('arrivee')?.touched
+        "
+      >
+        ⚠ Veuillez choisir un point d'arrivée.
+      </small>
+    </div>
+    <div class="mb-3">
+      <label for="heureArrivee" class="form-label">Heure d'arrivée</label>
+      <input
+        type="time"
+        class="form-control"
+        id="heureArrivee"
+        formControlName="heureArrivee"
+        placeholder="Entrer l'heure d'arrivée point d'arrivée"
+      />
+      <small
+        class="text-danger"
+        *ngIf="
+          form.get('heureArrivee')?.invalid && form.get('heureArrivee')?.touched
+        "
+      >
+        ⚠ L'heure d'arrivée est obligatoire et doit contenir au moins 2
+        caractères.
+      </small>
+    </div>
+  </form>
+</ng-template>
+
+<app-generic-modal
+  [modalId]="'genericModal'"
+  [title]="
+    isEditMode ? 'Modifier un point d\'arrivée' : 'Ajouter un point d\'arrivée'
+  "
+  [description]="
+    isEditMode
+      ? 'Modifier les informations du point de'
+      : 'Entrez les informations du point d\'arrivée'
+  "
+  [button]="isEditMode ? 'Mettre à jour' : 'Enregistrer'"
+  [formTemplate]="heureArriveeModal"
+  [isFormValid]="formValid"
+  (confirm)="addArriveeMoment()"
+  (close)="closeModal()"
+></app-generic-modal>

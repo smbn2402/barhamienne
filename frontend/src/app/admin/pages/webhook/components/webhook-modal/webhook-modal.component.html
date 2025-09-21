@@ -1,0 +1,39 @@
+<ng-template #webhookModal>
+  <form [formGroup]="form" (ngSubmit)="onSubmit()">
+    <label>URL du Callback</label>
+    <div class="input-group mb-3">
+      <input
+        type="text"
+        class="form-control"
+        formControlName="url"
+        placeholder="https://barhamienne.sn/api/payment/callback"
+      />
+    </div>
+    <div
+      *ngIf="form.get('url')?.invalid && form.get('url')?.touched"
+      class="text-danger"
+    >
+      <small *ngIf="form.get('url')?.errors?.['required']">
+        ⚠ Le nom est requis.
+      </small>
+      <small *ngIf="form.get('url')?.errors?.['minlength']">
+        ⚠ Le nom doit comporter au moins 2 caractères.
+      </small>
+    </div>
+  </form>
+</ng-template>
+
+<app-generic-modal
+  [modalId]="'genericModal'"
+  [title]="isEditMode ? 'Modifier un webhook' : 'Ajouter un webhook'"
+  [description]="
+    isEditMode
+      ? 'Modifier les informations du webhook'
+      : 'Entrez les informations du webhook'
+  "
+  [button]="isEditMode ? 'Mettre à jour' : 'Enregistrer'"
+  [formTemplate]="webhookModal"
+  [isFormValid]="formValid"
+  (confirm)="onSubmit()"
+  (close)="closeModal()"
+></app-generic-modal>

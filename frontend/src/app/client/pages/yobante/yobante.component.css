@@ -1,0 +1,42 @@
+@import url('./../../../../../public/css/style.css');
+
+.form-step {
+    display: none;
+  }
+  
+  .form-step.active {
+    display: block;
+  }
+  
+  .progress-bar {
+    transition: width 0.5s ease-in-out;
+  }
+  
+  .step-icon {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 0 10px;
+    color: gray;
+    font-size: 15px;
+  }
+  
+  .step-icon i {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: lightgray;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+  }
+  
+  .step-icon.active {
+    color: #ab0808;
+  }
+  
+  .step-icon.active i {
+    background: #ab0808;
+    color: white;
+  }

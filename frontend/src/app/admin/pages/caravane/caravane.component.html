@@ -1,0 +1,213 @@
+<div class="page-inner">
+  <app-breadcrumbs
+    [title]="'Caravanes'"
+    [breadcrumbs]="[
+      {
+        label: 'Caravanes',
+        url: '/admin/Caravanes/' + trajetId
+      },
+      { label: trajet && trajet.libelle ? trajet.libelle : '' },
+      { label: moment && moment.libelle ? moment.libelle : '' }
+    ]"
+  ></app-breadcrumbs>
+  <div class="row">
+    <div class="col-md-12">
+      <div class="card">
+        <div class="card-header">
+          <div class="d-flex align-items-center">
+            <h4 class="card-title col">Organiser une caravane</h4>
+            <button
+              class="btn btn-black btn-lg btn-md btn-sm btn-round ms-3"
+              data-bs-toggle="modal"
+              data-bs-target="#genericModal"
+            >
+              <i class="fa fa-plus"></i>
+              Ajouter
+            </button>
+          </div>
+        </div>
+        <div class="card-body">
+          <!-- Modal d'ajout de mise à jour -->
+          <app-caravane-modal
+            [trajetId]="trajetId"
+            [momentId]="momentId"
+            [isEditMode]="isEditMode"
+            [caravane]="selectedCaravane"
+            (onAdd)="isEditMode ? handleUpdate($event) : handleAdd($event)"
+          ></app-caravane-modal>
+
+          <!-- Loader affiché tant que `isLoading` est vrai -->
+          <!-- <div *ngIf="isLoading" class="text-center my-4">
+            <div class="spinner-border text-danger" role="status">
+              <span class="visually-hidden">Chargement...</span>
+            </div>
+            <p class="mt-2">Chargement des caravanes...</p>
+          </div> -->
+
+          <!-- Message si aucune caravane n'est disponible -->
+          <div class="row" *ngIf="!isLoading && caravanes.length === 0">
+            <div class="col-12 text-center">
+              <p class="alert alert-warning">
+                Aucune caravane n'a été organisée pour le moment.
+              </p>
+            </div>
+          </div>
+
+          <!-- Affichage des caravanes -->
+          <div class="row" *ngIf="!isLoading">
+            <div class="col-md-4" *ngFor="let caravane of caravanes">
+              <div class="card card-profile">
+                <div
+                  class="card-header d-flex align-items-center justify-content-center"
+                  style="background-image: url('assets/img/blogpost.jpg')"
+                >
+                 <h3 class="name text-white fw-bold">{{ caravane.trajet.libelle }}</h3>
+                  <!-- <div class="profile-picture">
+                    <div class="avatar avatar-xl">
+                      <img
+                        src="assets/img/profile.jpg"
+                        alt="..."
+                        class="avatar-img rounded-circle"
+                      />
+                    </div>
+                  </div> -->
+                </div>
+                <div class="card-body" style="padding-top: 8px">
+                  <div class="user-profile text-center">
+                    <div class="name">
+                      <app-date-format [date]="caravane.date"></app-date-format>
+                      {{ caravane.moment.libelle }}
+                    </div>
+                    <div class="job">Agent : {{caravane.telAgent}}</div>
+                    <!-- <div class="desc">A man who hates loneliness</div> -->
+                    <div class="social-media">
+                      <a
+                        class="btn btn-info btn-twitter btn-sm btn-link"
+                        href="#"
+                      >
+                        <span class="btn-label just-icon"
+                          ><div class="switch-wrapper">
+                            <label class="switch mb-0">
+                              <input
+                                type="checkbox"
+                                [checked]="caravane.estPubliee"
+                                (change)="togglePublication(caravane)"
+                              />
+                              <span class="slider"></span>
+                            </label>
+                            <span
+                              class="switch-label badge"
+                              [ngClass]="
+                                caravane.estPubliee ? 'bg-success' : 'bg-danger'
+                              "
+                            >
+                              {{
+                                caravane.estPubliee ? "Publiée" : "Non publiée"
+                              }}
+                            </span>
+                          </div>
+                        </span>
+                      </a>
+                      <a
+                        class="btn btn-primary btn-sm btn-link"
+                        rel="publisher"
+                        href="#"
+                      >
+                        <span class="btn-label just-icon"
+                          ><div class="switch-wrapper">
+                            <label class="switch mb-0">
+                              <input
+                                type="checkbox"
+                                [checked]="caravane.estOuverte"
+                                (change)="toggleOuverture(caravane)"
+                              />
+                              <span class="slider"></span>
+                            </label>
+                            <span
+                              class="switch-label badge"
+                              [ngClass]="
+                                caravane.estOuverte ? 'bg-success' : 'bg-danger'
+                              "
+                            >
+                              {{ caravane.estOuverte ? "Ouverte" : "Fermée" }}
+                            </span>
+                          </div>
+                        </span>
+                      </a>
+                    </div>
+                    <div class="view-profile row">
+                      <div class="col">
+                        <a
+                          [routerLink]="['/admin/reservations', caravane.id]"
+                          class="btn btn-sm btn-primary p-1"
+                          >Réservations</a
+                        >
+                      </div>
+                      <div class="col">
+                        <a
+                          [routerLink]="['/admin/yobantes', caravane.id]"
+                          class="btn btn-sm btn-secondary p-1"
+                          >Yobantés</a
+                        >
+                      </div>
+                      <div class="col">
+                        <div class="btn-group dropdown">
+                          <button
+                            class="btn btn-sm btn-info dropdown-toggle p-1"
+                            data-bs-toggle="dropdown"
+                            href="#"
+                            aria-expanded="false"
+                          >
+                            <i class="fa fa-bars"></i>
+                            Plus
+                          </button>
+                          <ul class="dropdown-menu">
+                            <li>
+                              <a
+                                class="dropdown-item"
+                                (click)="selecteCaravane(caravane)"
+                                ><i class="fa fa-edit"></i> Modifier
+                              </a>
+                              <div class="dropdown-divider"></div>
+                              <a
+                                class="dropdown-item"
+                                (click)="handleDelete(caravane)"
+                                ><i class="fa fa-times"></i> Supprimer</a
+                              >
+                            </li>
+                          </ul>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="card-footer">
+                  <div class="row user-stats text-center">
+                    <div class="col">
+                      <div class="number">
+                        {{ caravaneStats[caravane.id]?.total || 0 }}
+                      </div>
+                      <div class="title">Réservations</div>
+                    </div>
+                    <div class="col">
+                      <div class="number">
+                        {{ caravaneStats[caravane.id]?.confirmees || 0 }}
+                      </div>
+                      <div class="title">Confirmées</div>
+                    </div>
+                    <div class="col">
+                      <div class="number">
+                        {{ caravaneStats[caravane.id]?.en_attente || 0 }}
+                      </div>
+                      <div class="title">En attente</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

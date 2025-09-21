@@ -1,0 +1,107 @@
+<div class="page-inner">
+  <app-breadcrumbs
+    [title]="'Heures de départ'"
+    [breadcrumbs]="[
+      {
+        label: 'Heures de départ',
+        url: '/admin/heures-depart/' + trajetId + '/' + momentId
+      },
+      { label: trajet && trajet.libelle ? trajet.libelle : '' },
+      { label: moment && moment.libelle ? moment.libelle : '' }
+    ]"
+  ></app-breadcrumbs>
+  <div class="row">
+    <div class="col-md-12">
+      <div class="card">
+        <div class="card-header">
+          <div class="d-flex align-items-center">
+            <h4 class="card-title col">Heures de départ</h4>
+            <button
+              class="btn btn-black btn-lg btn-md btn-sm btn-round ms-3"
+              data-bs-toggle="modal"
+              data-bs-target="#addModal"
+            >
+              <i class="fa fa-plus"></i>
+              Ajouter
+            </button>
+          </div>
+        </div>
+        <div class="card-body">
+          <!-- Modal d'ajout -->
+
+          <app-heure-depart-modal
+            [trajetId]="trajetId"
+            [momentId]="momentId"
+            [isEditMode]="isEditMode"
+            [departMoment]="selectedDepartMoment"
+            [trajetId]="trajetId"
+            (onAdd)="isEditMode ? handleUpdate($event) : handleAdd($event)"
+          ></app-heure-depart-modal>
+
+          <!-- Loader affiché tant que `isLoading` est vrai -->
+          <!-- <div *ngIf="isLoading" class="text-center my-4">
+            <div class="spinner-border text-danger" role="status">
+              <span class="visually-hidden">Chargement...</span>
+            </div>
+            <p class="mt-2">Chargement des points de départ...</p>
+          </div> -->
+
+          <!-- Message si aucune caravane n'est disponible -->
+          <!-- <div class="row" *ngIf="!isLoading && departMoments.length === 0">
+            <div class="col-12 text-center">
+              <p class="alert alert-warning">
+                Aucun heure de départ n'a été ajouté pour le moment.
+              </p>
+            </div>
+          </div> -->
+
+          <!-- Affichage des caravanes -->
+          <div class="row">
+            <div class="table-responsive">
+              <table
+                datatable
+                [dtOptions]="dtOptions"
+                [dtTrigger]="dtTrigger"
+                class="table table-bordered table-head-bg-black table-striped table-hover"
+              >
+                <thead>
+                  <tr>
+                    <th>#</th>
+                    <th>Nom du point de départ</th>
+                    <th class="text-center">Heure</th>
+                    <th class="text-center">Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let departMoment of departMoments">
+                    <td>{{ departMoment.depart.order }}</td>
+                    <td>{{ departMoment.depart.libelle }}</td>
+                    <td class="text-center">{{ departMoment.heureDepart }}</td>
+                    <td>
+                      <div class="d-flex justify-content-center">
+                        <button
+                          class="btn btn-sm btn-warning me-1"
+                          (click)="
+                            selecteDepartMoment(departMoment, 'addModal')
+                          "
+                        >
+                          <i class="fa fa-edit"></i>
+                        </button>
+                        <button
+                          class="btn btn-sm btn-danger"
+                          (click)="handleDelete(departMoment)"
+                        >
+                          <i class="fa fa-trash"></i>
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

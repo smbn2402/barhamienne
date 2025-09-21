@@ -1,0 +1,7 @@
+<div class="loader-overlay" *ngIf="sharedService.isLoading$ | async">
+  <img src="img/logo.png" width="500" alt="Logo" class="loader-logo" />
+  <div class="spinner"></div>
+  <p>Chargement en cours...</p>
+</div>
+<router-outlet></router-outlet>
+

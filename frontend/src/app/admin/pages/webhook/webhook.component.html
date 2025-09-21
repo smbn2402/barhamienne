@@ -1,0 +1,107 @@
+<div class="page-inner">
+  <app-breadcrumbs
+    [title]="'Webhooks'"
+    [breadcrumbs]="[{ label: 'Webhooks', url: '/admin/webhooks' }]"
+  ></app-breadcrumbs>
+  <div class="row">
+    <div class="col-md-12">
+      <div class="card">
+        <div class="card-header">
+          <div class="d-flex align-items-center">
+            <h4 class="card-title col">La listes des webhooks</h4>
+            <button
+              class="btn btn-black btn-lg btn-md btn-sm btn-round ms-3"
+              data-bs-toggle="dropdown"
+              href="#"
+            >
+              <i class="fa fa-bars"></i>
+              Menu
+            </button>
+            <ul class="dropdown-menu">
+              <li>
+                <a
+                  class="dropdown-item"
+                  href="#"
+                  data-bs-toggle="modal"
+                  data-bs-target="#genericModal"
+                  ><i class="fa fa-car"></i> Ajouter un webhook
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div class="card-body">
+          <!-- Modal d'ajout -->
+
+          <app-webhook-modal
+            [isEditMode]="isEditMode"
+            [webhook]="selectedWebhook"
+            (onAdd)="isEditMode ? handleUpdate($event) : handleAdd($event)"
+          ></app-webhook-modal>
+
+          <!-- Affichage des caravanes -->
+          <div class="row">
+            <div class="table-responsive">
+              <table
+                datatable
+                [dtOptions]="dtOptions"
+                [dtTrigger]="dtTrigger"
+                class="table table-bordered table-head-bg-black table-striped table-hover"
+              >
+                <thead>
+                  <tr>
+                    <th>
+                      <input
+                        type="checkbox"
+                        class="form-check-input border-1 border-dark"
+                        (change)="selectAll($event)"
+                      />
+                    </th>
+                    <th>#</th>
+                    <th>Name</th>
+                    <th>Code</th>
+                    <th>CallBackUrl</th>
+                    <th style="width: 10%">Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let webhook of webhooks; let i = index">
+                    <td>
+                      <input
+                        type="checkbox"
+                        class="form-check-input border-1 border-dark"
+                        (change)="toggleSelection(webhook, $event)"
+                        [checked]="selectedWebhooks.includes(webhook)"
+                      />
+                    </td>
+                    <td>{{ i + 1 }}</td>
+                    <td>{{ webhook.name }}</td>
+                    <td>{{ webhook.code }}</td>
+                    <td>{{ webhook.callbackUrl }}</td>
+
+                    <td>
+                      <div class="d-flex justify-content-center">
+                        <button
+                          class="btn btn-sm btn-warning me-1"
+                          (click)="selecteWebhook(webhook)"
+                        >
+                          <i class="fa fa-edit"></i>
+                        </button>
+                        <button
+                          class="btn btn-sm btn-danger me-1"
+                          (click)="handleDelete(webhook)"
+                        >
+                          <i class="fa fa-trash"></i>
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

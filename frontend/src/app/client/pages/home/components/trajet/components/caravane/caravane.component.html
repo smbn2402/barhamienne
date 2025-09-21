@@ -1,0 +1,113 @@
+<app-header
+  [heroImageSrc]="'caravane.png'"
+  [heroTitle]="'Caravanes vers<br/>' + trajet.libelle"
+  [heroText]="
+    'Voyagez en toute sécurité avec Barhamienne Transport. Réservez votre place dès maintenant vers ' +
+    trajet.libelle +
+    ' et profitez d’un trajet confortable et fiable.'
+  "
+></app-header>
+<section class="py-5 py-xl-8 bsb-section-py-xxl-1" *ngIf="trajet">
+  <div class="container mb-5 mb-md-6 mb-xl-10">
+    <div class="row justify-content-md-center">
+      <div class="col-12 col-md-10 col-lg-9 col-xl-8 col-xxl-7 text-center">
+        <h3 class="fs-6 text-secondary mb-2 text-uppercase">
+          Nos caravane pour
+        </h3>
+        <h2 class="display-5 fw-bold mb-0">{{ trajet.libelle }}.</h2>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="isLoading" class="text-center my-4">
+    <div class="spinner-border text-danger" role="status">
+      <span class="visually-hidden">Chargement...</span>
+    </div>
+    <p class="mt-2">Chargement des caravanes...</p>
+  </div>
+
+  <div class="row" *ngIf="caravanes.length === 0">
+    <div class="col-12 text-center">
+      <p class="alert alert-warning text-black">
+        Aucune caravane n'a été organisée pour le moment.
+      </p>
+    </div>
+  </div>
+
+  <div class="container overflow-hidden" *ngIf="!isLoading">
+    <div class="row gy-4 gy-xxl-5 gx-xxl-5">
+      <div class="col-md-6 col-lg-4 mb-4" *ngFor="let caravane of caravanes">
+        <div class="service-39381">
+          <div class="card">
+            <div
+              class="card-header d-flex justify-content-center align-items-center"
+            >
+              <img
+                src="img/calendar.jpg"
+                class="rounded-circle me-1"
+                height="50px"
+                width="50px"
+                alt="avatar"
+              />
+              <div class="text-center">
+                <h5 class="card-title font-weight-bold">
+                  <app-date-format [date]="caravane.date"></app-date-format>
+                  {{ caravane.moment.libelle }}
+                </h5>
+              </div>
+            </div>
+            <div class="card-body">
+              <ul class="list-unstyled mb-0">
+                <li class="mb-2">
+                  <i class="bi bi-geo-alt text-danger me-2"></i>
+                  <strong>Départ :</strong>
+                  {{ caravane.departMomentPrincipale?.depart?.libelle }} ({{
+                    caravane.departMomentPrincipale?.heureDepart
+                  }})
+                </li>
+                <li class="mb-2">
+                  <i class="bi bi-flag text-primary me-2"></i>
+                  <strong>Arrivée :</strong>
+                  {{ caravane.arriveeMomentPrincipale?.arrivee?.libelle }}
+                </li>
+                <li class="mb-2">
+                  <i class="bi bi-cash-coin text-success me-2"></i>
+                  <strong>Prix :</strong> {{ caravane.prix }} FCFA
+                </li>
+              </ul>
+            </div>
+            <div class="card-footer">
+              <button
+                class="btn btn-sm btn-white text-success float-start border-success"
+                [id]="caravane.id"
+                (click)="openWhatsapp(caravane)"
+                title="Partager sur WhatsApp"
+              >
+                <img src="img/whathsapp.png" width="25" />Partager
+              </button>
+              <button
+                class="btn float-end"
+                [ngClass]="
+                  caravane.estOuverte
+                    ? 'btn-danger'
+                    : 'btn-outline-secondary disabled'
+                "
+                [routerLink]="
+                  caravane.estOuverte ? ['/reservation', caravane.id] : null
+                "
+                [attr.disabled]="!caravane.estOuverte ? true : null"
+                [attr.title]="
+                  caravane.estOuverte
+                    ? 'Cliquer ici pour réserver une place'
+                    : 'Caravane fermée aux réservations'
+                "
+              >
+                {{ caravane.estOuverte ? "Réserver" : "🔒 Complète" }}
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

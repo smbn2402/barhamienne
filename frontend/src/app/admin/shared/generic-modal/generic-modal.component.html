@@ -1,0 +1,41 @@
+<div
+  class="modal fade"
+  [id]="modalId"
+  tabindex="-1"
+  role="dialog"
+  data-bs-backdrop="static"
+  data-bs-keyboard="false"
+>
+  <div class="modal-dialog modal-dialog-centered modal-md" role="document">
+    <div class="modal-content">
+      <div class="modal-body p-0">
+        <div class="card mb-0">
+          <div class="card-header text-center">
+            <h3 class="fw-bolder card-title">{{ title }}</h3>
+            <p class="mb-0">{{ description }}</p>
+          </div>
+          <div class="card-body">
+            <ng-container *ngTemplateOutlet="formTemplate"></ng-container>
+          </div>
+          <div class="card-footer">
+            <button
+              type="button"
+              class="btn btn-black"
+              (click)="close.emit()"
+            >
+              Fermer
+            </button>
+            <button
+              type="button"
+              class="btn btn-secondary float-end"
+              [disabled]="!isFormValid"
+              (click)="confirm.emit()"
+            >
+              {{button}}
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

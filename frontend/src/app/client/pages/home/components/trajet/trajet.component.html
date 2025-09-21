@@ -1,0 +1,83 @@
+<section class="py-5 py-xl-8 bsb-section-py-xxl-1">
+  <div class="container mb-5 mb-md-6 mb-xl-10">
+    <div class="row justify-content-md-center">
+      <div class="col-12 col-md-10 col-lg-9 col-xl-8 col-xxl-7 text-center">
+        <h3 class="fs-6 text-secondary mb-2 text-uppercase">Nos trajets</h3>
+        <h2 class="display-5 fw-bold mb-0">
+          Choisissez votre trajet cher(e) client(e) <br />
+          UGB-THIES-DAKAR <br />
+          DAKAR-THIES-UGB <br />
+          UGB-MBOUR <br />
+          MBOUR -UGB.
+        </h2>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="isLoading" class="text-center my-4">
+    <div class="spinner-border text-danger" role="status">
+      <span class="visually-hidden">Chargement...</span>
+    </div>
+    <p class="mt-2">Chargement des trajets...</p>
+  </div>
+
+  <div class="row" *ngIf="!isLoading && trajets.length === 0">
+    <div class="col-12 text-center">
+      <p class="alert alert-warning text-black">
+        Aucune caravane n'a été organisée pour le moment.
+      </p>
+    </div>
+  </div>
+
+  <div class="container overflow-hidden" *ngIf="!isLoading">
+    <div class="row gy-4 gy-md-0 gx-xxl-5">
+      <div class="col-12 col-md-3" *ngFor="let trajet of trajets">
+        <div class="card bsb-tpl-bg-lotion bsb-tpl-border-lg-cyan">
+          <div class="card-body text-center p-4 p-xxl-5">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="56"
+              height="56"
+              fill="currentColor"
+              class="bi bi-geo-alt text-danger mb-4"
+              viewBox="0 0 16 16"
+            >
+              <path
+                d="M8 0a5.53 5.53 0 0 0-5.5 5.5c0 3.203 5.5 10.5 5.5 10.5s5.5-7.297 5.5-10.5A5.53 5.53 0 0 0 8 0zm0 7.5a2 2 0 1 1 0-4 2 2 0 0 1 0 4z"
+              />
+            </svg>
+            <h5 class="fw-bold mb-4">{{ trajet.libelle }}</h5>
+            <h6 class="fw-bold text-danger">{{ trajet.libelleWolof }}</h6>
+            <p class="fw-bold text-danger mb-3">
+              À partir de {{ trajet.prix | currency : "XOF" }}
+            </p>
+            <p class="mb-4 text-secondary">
+              Cliquez pour consulter les caravanes disponibles sur cet
+              itinéraire et effectuer votre réservation facilement.
+            </p>
+            <a
+            href="javascript:void(0)"
+              (click)="onNavigate(['/caravanes', trajet.id])"
+              class="fw-bold text-decoration-none link-danger"
+            >
+              Voir les dates
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="16"
+                height="16"
+                fill="currentColor"
+                class="bi bi-arrow-right-short"
+                viewBox="0 0 16 16"
+              >
+                <path
+                  fill-rule="evenodd"
+                  d="M4 8a.5.5 0 0 1 .5-.5h5.793L8.146 5.354a.5.5 0 1 1 .708-.708l3 3a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708-.708L10.293 8.5H4.5A.5.5 0 0 1 4 8z"
+                />
+              </svg>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

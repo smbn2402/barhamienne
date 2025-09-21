@@ -1,0 +1,125 @@
+<ng-template #caravaneModal>
+  <form [formGroup]="form" (ngSubmit)="onSubmit()">
+    <!-- Libellé -->
+    <label>Libellé</label>
+    <div class="input-group mb-3">
+      <input
+        formControlName="libelle"
+        type="text"
+        class="form-control"
+        placeholder="Entrer le libellé de la caravane"
+      />
+    </div>
+    <div
+      *ngIf="form.get('libelle')?.invalid && form.get('libelle')?.touched"
+      class="text-danger"
+    >
+      <small *ngIf="form.get('libelle')?.errors?.['required']">
+        ⚠ Le libellé est requis.
+      </small>
+      <small *ngIf="form.get('libelle')?.errors?.['minlength']">
+        ⚠ Le libellé doit comporter au moins 2 caractères.
+      </small>
+    </div>
+
+    <!-- Date -->
+    <label>Date</label>
+    <div class="input-group mb-3">
+      <input
+        formControlName="date"
+        type="date"
+        class="form-control"
+        placeholder="Entrer la date"
+      />
+    </div>
+    <div
+      *ngIf="form.get('date')?.invalid && form.get('date')?.touched"
+      class="text-danger"
+    >
+      <small *ngIf="form.get('date')?.errors?.['required']">
+        ⚠ La date est requise.
+      </small>
+    </div>
+
+    <!-- Prix -->
+    <label>Prix du ticket</label>
+    <div class="input-group mb-3">
+      <input
+        formControlName="prix"
+        type="text"
+        class="form-control"
+        placeholder="Entrer le prix du ticket"
+      />
+    </div>
+    <div
+      *ngIf="form.get('prix')?.invalid && form.get('prix')?.touched"
+      class="text-danger"
+    >
+      <small *ngIf="form.get('prix')?.errors?.['required']">
+        ⚠ Le prix est requis.
+      </small>
+    </div>
+
+    <!-- Téléphone -->
+    <label>Téléphone</label>
+    <div class="input-group mb-3">
+      <input
+        formControlName="telAgent"
+        type="tel"
+        class="form-control"
+        placeholder="Entrer le numéro de téléphone de l'agent"
+      />
+    </div>
+    <div
+      *ngIf="form.get('telAgent')?.invalid && form.get('telAgent')?.touched"
+      class="text-danger"
+    >
+      <small *ngIf="form.get('telAgent')?.errors?.['required']">
+        ⚠ Le numéro de téléphone est requis.
+      </small>
+      <small *ngIf="form.get('telAgent')?.errors?.['pattern']">
+        ⚠ Le numéro de téléphone est invalide.
+      </small>
+    </div>
+
+    <!-- États de la caravane -->
+    <div class="form-check form-switch mb-2">
+      <input
+        class="form-check-input"
+        type="checkbox"
+        formControlName="estPubliee"
+        id="est_publiee"
+      />
+      <label class="form-check-label" for="est_publiee">
+        Caravane publiée
+      </label>
+    </div>
+
+    <div class="form-check form-switch mb-3">
+      <input
+        class="form-check-input"
+        type="checkbox"
+        formControlName="estOuverte"
+        id="est_ouverte"
+      />
+      <label class="form-check-label" for="est_ouverte">
+        Caravane ouverte
+      </label>
+    </div>
+  </form>
+</ng-template>
+
+<app-generic-modal
+  [modalId]="'genericModal'"
+  [title]="isEditMode ? 'Modifier une caravane' : 'Ajouter une caravane'"
+  [description]="
+    isEditMode
+      ? 'Modifier les informations de la caravane'
+      : 'Entrez les informations de la caravane'
+  "
+  [button]="isEditMode ? 'Mettre à jour' : 'Enregistrer'"
+  [formTemplate]="caravaneModal"
+  [isFormValid]="formValid"
+  (confirm)="onSubmit()"
+  (close)="closeModal()"
+></app-generic-modal>

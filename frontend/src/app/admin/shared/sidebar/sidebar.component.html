@@ -1,0 +1,300 @@
+<!-- Sidebar -->
+<div class="sidebar" data-background-color="dark">
+  <div class="sidebar-logo">
+    <!-- Logo Header -->
+    <div class="logo-header" data-background-color="dark">
+      <a [routerLink]="['dashboard']" class="logo">
+        <img
+          src="img/logo1.PNG"
+          alt="navbar brand"
+          class="navbar-brand"
+          height="150"
+        />
+      </a>
+      <div class="nav-toggle">
+        <button class="btn btn-toggle toggle-sidebar">
+          <i class="gg-menu-right"></i>
+        </button>
+        <button class="btn btn-toggle sidenav-toggler">
+          <i class="gg-menu-left"></i>
+        </button>
+      </div>
+      <button class="topbar-toggler more">
+        <i class="gg-more-vertical-alt"></i>
+      </button>
+    </div>
+    <!-- End Logo Header -->
+  </div>
+  <div class="sidebar-wrapper scrollbar scrollbar-inner">
+    <div class="sidebar-content">
+      <ul class="nav nav-secondary">
+        <li
+          class="nav-item"
+          routerLinkActive="active"
+          [routerLinkActiveOptions]="{ exact: true }"
+        >
+          <a [routerLink]="['dashboard']">
+            <i class="fas fa-home"></i>
+            <p>Dashboard</p>
+            <!-- <span class="caret"></span> -->
+          </a>
+        </li>
+        <li class="nav-section">
+          <span class="sidebar-mini-icon">
+            <i class="fa fa-ellipsis-h"></i>
+          </span>
+          <h4 class="text-section">Métiers</h4>
+        </li>
+        <li
+          class="nav-item"
+          [class.active]="activeTrajetId"
+          [class.show]="activeTrajetId"
+        >
+          <a data-bs-toggle="collapse" href="#caravanes">
+            <i class="fas fa-bus"></i>
+            <p>Caravanes</p>
+            <span class="caret"></span>
+          </a>
+          <div class="collapse" [class.show]="activeTrajetId" id="caravanes">
+            <ul class="nav nav-collapse">
+              <li
+                *ngFor="let trajet of trajets"
+                [class.active]="trajet.id === activeTrajetId"
+                [class.show]="trajet.id === activeTrajetId"
+              >
+                <a data-bs-toggle="collapse" [href]="'#' + trajet.id">
+                  <span class="sub-item">{{ trajet.libelle }}</span>
+                  <span class="caret"></span>
+                </a>
+                <div
+                  class="collapse"
+                  [id]="trajet.id"
+                  [class.show]="trajet.id === activeTrajetId"
+                >
+                  <ul class="nav nav-collapse subnav">
+                    <li
+                      *ngFor="let moment of moments"
+                      [class.active]="
+                        trajet.id === activeTrajetId &&
+                        moment.id === activeMomentId
+                      "
+                    >
+                      <a [routerLink]="['caravanes', trajet.id, moment.id]">
+                        <span class="sub-item">{{ moment.libelle }}</span>
+                      </a>
+                    </li>
+                  </ul>
+                </div>
+              </li>
+            </ul>
+          </div>
+        </li>
+        <li
+          class="nav-item"
+          routerLinkActive="active"
+          [routerLinkActiveOptions]="{ exact: true }"
+          *ngIf="roleService.hasRole('admin')"
+        >
+          <a [routerLink]="['sms']">
+            <i class="fas fa-envelope"></i>
+            <p>Message</p>
+          </a>
+        </li>
+        <li
+          class="nav-item"
+          routerLinkActive="active"
+          [routerLinkActiveOptions]="{ exact: true }"
+          *ngIf="roleService.hasRole('admin')"
+        >
+          <a [routerLink]="['clients']">
+            <i class="fas fa-users"></i>
+            <p>Clients</p>
+          </a>
+        </li>
+        <li
+          class="nav-item"
+          routerLinkActive="active"
+          [routerLinkActiveOptions]="{ exact: true }"
+          *ngIf="roleService.hasRole('super-admin')"
+        >
+          <a [routerLink]="['utilisateurs']">
+            <i class="fas fa-user-shield"></i>
+            <p>Utilisateurs</p>
+          </a>
+        </li>
+        <li
+          class="nav-item"
+          routerLinkActive="active"
+          [routerLinkActiveOptions]="{ exact: true }"
+          *ngIf="roleService.hasRole('super-admin')"
+        >
+          <a [routerLink]="['webhook']">
+            <i class="fa-solid fa-link"></i>
+            <p>Webhook</p>
+          </a>
+        </li>
+        <li class="nav-section" *ngIf="roleService.hasRole('admin')">
+          <span class="sidebar-mini-icon">
+            <i class="fa fa-ellipsis-h"></i>
+          </span>
+          <h4 class="text-section">Paramétrages</h4>
+        </li>
+        <li
+          class="nav-item"
+          routerLinkActive="active show"
+          [routerLinkActiveOptions]="{ exact: false }"
+          *ngIf="roleService.hasRole('admin')"
+        >
+          <a data-bs-toggle="collapse" href="#depart">
+            <i class="fas fa-location-arrow"></i>
+            <p>Points de départ</p>
+            <span class="caret"></span>
+          </a>
+          <div class="collapse" id="depart">
+            <ul class="nav nav-collapse">
+              <li
+                *ngFor="let trajet of trajets"
+                routerLinkActive="active"
+                [routerLinkActiveOptions]="{ exact: false }"
+              >
+                <a [routerLink]="['departs', trajet.id]">
+                  <span class="sub-item">{{ trajet.libelle }}</span>
+                </a>
+              </li>
+            </ul>
+          </div>
+        </li>
+        <li
+          class="nav-item"
+          routerLinkActive="active show"
+          [routerLinkActiveOptions]="{ exact: false }"
+          *ngIf="roleService.hasRole('admin')"
+        >
+          <a data-bs-toggle="collapse" href="#submenu">
+            <i class="fas fa-clock"></i>
+            <p>Heures de départ</p>
+            <span class="caret"></span>
+          </a>
+          <div class="collapse" id="submenu">
+            <ul class="nav nav-collapse">
+              <li
+                *ngFor="let trajet of trajets"
+                routerLinkActive="active show"
+                [routerLinkActiveOptions]="{ exact: false }"
+              >
+                <a data-bs-toggle="collapse" [href]="'#' + trajet.id">
+                  <span class="sub-item">{{ trajet.libelle }}</span>
+                  <span class="caret"></span>
+                </a>
+                <div class="collapse" [id]="trajet.id">
+                  <ul class="nav nav-collapse subnav">
+                    <li
+                      *ngFor="let moment of moments"
+                      routerLinkActive="active"
+                      [routerLinkActiveOptions]="{ exact: false }"
+                    >
+                      <a [routerLink]="['heures-depart', trajet.id, moment.id]">
+                        <span class="sub-item">{{ moment.libelle }}</span>
+                      </a>
+                    </li>
+                  </ul>
+                </div>
+              </li>
+            </ul>
+          </div>
+        </li>
+        <li
+          class="nav-item"
+          routerLinkActive="active show"
+          [routerLinkActiveOptions]="{ exact: false }"
+          *ngIf="roleService.hasRole('admin')"
+        >
+          <a data-bs-toggle="collapse" href="#arrivee">
+            <i class="fas fa-map-marker-alt"></i>
+            <p>Points d'arrivée</p>
+            <span class="caret"></span>
+          </a>
+          <div class="collapse" id="arrivee">
+            <ul class="nav nav-collapse">
+              <li
+                *ngFor="let trajet of trajets"
+                routerLinkActive="active"
+                [routerLinkActiveOptions]="{ exact: false }"
+              >
+                <a [routerLink]="['arrivees', trajet.id]">
+                  <span class="sub-item">{{ trajet.libelle }}</span>
+                </a>
+              </li>
+            </ul>
+          </div>
+        </li>
+        <li
+          class="nav-item"
+          routerLinkActive="active show"
+          [routerLinkActiveOptions]="{ exact: false }"
+          *ngIf="roleService.hasRole('admin')"
+        >
+          <a data-bs-toggle="collapse" href="#heures-arrivee">
+            <i class="fas fa-stopwatch"></i>
+            <p>Heures d'arrivée</p>
+            <span class="caret"></span>
+          </a>
+          <div class="collapse" id="heures-arrivee">
+            <ul class="nav nav-collapse">
+              <li
+                *ngFor="let trajet of trajets"
+                routerLinkActive="active show"
+                [routerLinkActiveOptions]="{ exact: false }"
+              >
+                <a data-bs-toggle="collapse" [href]="'#' + trajet.id">
+                  <span class="sub-item">{{ trajet.libelle }}</span>
+                  <span class="caret"></span>
+                </a>
+                <div class="collapse" [id]="trajet.id">
+                  <ul class="nav nav-collapse subnav">
+                    <li
+                      *ngFor="let moment of moments"
+                      routerLinkActive="active"
+                      [routerLinkActiveOptions]="{ exact: false }"
+                    >
+                      <a
+                        [routerLink]="['heures-arrivee', trajet.id, moment.id]"
+                      >
+                        <span class="sub-item">{{ moment.libelle }}</span>
+                      </a>
+                    </li>
+                  </ul>
+                </div>
+              </li>
+            </ul>
+          </div>
+        </li>
+        <li
+          class="nav-item"
+          routerLinkActive="active"
+          [routerLinkActiveOptions]="{ exact: true }"
+          *ngIf="roleService.hasRole('admin')"
+        >
+          <a [routerLink]="['trajets']">
+            <i class="fas fa-route"></i>
+            <p>Trajets</p>
+            <!-- <span class="caret"></span> -->
+          </a>
+        </li>
+        <li
+          class="nav-item"
+          routerLinkActive="active"
+          [routerLinkActiveOptions]="{ exact: true }"
+          *ngIf="roleService.hasRole('admin')"
+        >
+          <a [routerLink]="['moments']">
+            <i class="fas fa-times-circle"></i>
+            <p>Moments</p>
+            <!-- <span class="caret"></span> -->
+          </a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>
+<!-- End Sidebar -->

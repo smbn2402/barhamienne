@@ -1,0 +1,152 @@
+<div class="page-inner">
+  <app-breadcrumbs
+    [title]="'Utilisateurs'"
+    [breadcrumbs]="[{ label: 'Utilisateurs', url: '/admin/utilisateurs' }]"
+  ></app-breadcrumbs>
+  <div class="row">
+    <div class="col-md-12">
+      <div class="card">
+        <div class="card-header">
+          <div class="d-flex align-items-center">
+            <h4 class="card-title col">La listes des utilisateurs</h4>
+            <button
+              class="btn btn-black btn-lg btn-md btn-sm btn-round ms-3"
+              data-bs-toggle="dropdown"
+              href="#"
+            >
+              <i class="fa fa-bars"></i>
+              Menu
+            </button>
+            <ul class="dropdown-menu">
+              <li>
+                <a
+                  class="dropdown-item"
+                  href="#"
+                  data-bs-toggle="modal"
+                  data-bs-target="#genericModal"
+                  ><i class="fa fa-car"></i> Ajouter un utilisateur
+                </a>
+                <div class="dropdown-divider"></div>
+                <a
+                  class="dropdown-item"
+                  href="#"
+                  data-bs-toggle="modal"
+                  data-bs-target="#messageModal"
+                  ><i class="fa fa-envelope"></i> Envoyer message</a
+                >
+                <div class="dropdown-divider"></div>
+                <a
+                  class="dropdown-item"
+                  href="#"
+                  (click)="exportConfirmedUtilisateursToPDF()"
+                >
+                  <i class="fa fa-file-pdf"></i> Exporter en PDF
+                </a>
+
+                <div class="dropdown-divider"></div>
+                <a
+                  class="dropdown-item"
+                  href="#"
+                  (click)="exportConfirmedUtilisateurs()"
+                  ><i class="fa fa-file-excel"></i> Exporter en Excel</a
+                >
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div class="card-body">
+          <!-- Modal d'ajout -->
+
+          <app-utilisateur-modal
+            [isEditMode]="isEditMode"
+            [utilisateur]="selectedUtilisateur"
+            (onAdd)="isEditMode ? handleUpdate($event) : handleAdd($event)"
+          ></app-utilisateur-modal>
+
+          <!-- Affichage des caravanes -->
+          <div class="row">
+            <div class="table-responsive">
+              <table
+                datatable
+                [dtOptions]="dtOptions"
+                [dtTrigger]="dtTrigger"
+                class="table table-bordered table-head-bg-black table-striped table-hover"
+              >
+                <thead>
+                  <tr>
+                    <th>
+                      <input
+                        type="checkbox"
+                        class="form-check-input border-1 border-dark"
+                        (change)="selectAll($event)"
+                      />
+                    </th>
+                    <th>#</th>
+                    <th>Nom</th>
+                    <th>Email</th>
+                    <th>Téléphone</th>
+                    <th>Rôles</th>
+                    <th style="width: 10%">Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let utilisateur of utilisateurs; let i = index">
+                    <td>
+                      <input
+                        type="checkbox"
+                        class="form-check-input border-1 border-dark"
+                        (change)="toggleSelection(utilisateur, $event)"
+                        [checked]="selectedUtilisateurs.includes(utilisateur)"
+                      />
+                    </td>
+                    <td>{{ i + 1 }}</td>
+                    <td>{{ utilisateur.name }}</td>
+                    <td>{{ utilisateur.email }}</td>
+                    <td>
+                      <a
+                        [href]="'tel:' + utilisateur.phone"
+                        class="badge bg-success"
+                        >{{ utilisateur.phone }}</a
+                      >
+                    </td>
+                    <td>
+                      <span
+                        *ngFor="let role of utilisateur.roles"
+                        class="badge bg-info me-1"
+                        >{{ role.name }}</span
+                      >
+                    </td>
+
+                    <td>
+                      <div class="d-flex justify-content-center">
+                        <button
+                          class="btn btn-sm btn-warning me-1"
+                          (click)="selecteUtilisateur(utilisateur)"
+                        >
+                          <i class="fa fa-edit"></i>
+                        </button>
+                        <button
+                          class="btn btn-sm btn-danger me-1"
+                          (click)="handleDelete(utilisateur)"
+                        >
+                          <i class="fa fa-trash"></i>
+                        </button>
+                        <button
+                          class="btn btn-sm btn-info"
+                          (click)="resetPassword(utilisateur)"
+                          title="Réinitialiser le mot de passe"
+                        >
+                          <i class="fa fa-key"></i>
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

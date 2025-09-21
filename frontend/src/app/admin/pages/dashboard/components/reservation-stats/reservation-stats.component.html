@@ -1,0 +1,15 @@
+<div class="mb-4">
+  <label for="year">Année :</label>
+  <select id="year" [(ngModel)]="selectedYear" (change)="onYearChange()" class="form-control w-25">
+    <option *ngFor="let year of years" [value]="year">{{ year }}</option>
+  </select>
+</div>
+
+<div *ngIf="chartOptions.series">
+  <apx-chart
+    [series]="chartOptions.series"
+    [chart]="chartOptions.chart!"
+    [xaxis]="chartOptions.xaxis!"
+    [title]="chartOptions.title!"
+  ></apx-chart>
+</div>

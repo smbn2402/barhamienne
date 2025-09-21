@@ -1,0 +1,79 @@
+<div class="row">
+  <div class="col-md-12">
+    <div class="card card-round">
+      <div class="card-header">
+        <div class="card-head-row card-tools-still-right">
+          <h4 class="card-title">Statistiques par Caravane</h4>
+        </div>
+        <p class="card-category">Réservations et colis envoyés (Yobanté)</p>
+      </div>
+      <div class="card-body">
+        <div class="row">
+          <div class="col-md-12">
+            <div class="table-responsive table-hover table-sales">
+              <table class="table table-striped">
+                <thead>
+                  <tr>
+                    <th>Date</th>
+                    <th>Trajet</th>
+                    <th>En ligne</th>
+                    <th>Statut</th>
+                    <th class="text-center">Réservations</th>
+                    <th class="text-center">Yobanté</th>
+                    <th class="text-center">Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let caravane of caravanes">
+                    <td>
+                      <app-date-format [date]="caravane.date"></app-date-format>
+                      {{ caravane.moment.libelle }}
+                    </td>
+                    <td>{{ caravane.trajet.libelle }}</td>
+                    <td>
+                      <span
+                        class="switch-label badge"
+                        [ngClass]="
+                          caravane.estPubliee ? 'bg-success' : 'bg-danger'
+                        "
+                      >
+                        {{ caravane.estPubliee ? "Publiée" : "Non publiée" }}
+                      </span>
+                    </td>
+                    <td>
+                      <span
+                        class="switch-label badge"
+                        [ngClass]="
+                          caravane.estOuverte ? 'bg-success' : 'bg-danger'
+                        "
+                      >
+                        {{ caravane.estOuverte ? "Ouverte" : "Fermée" }}
+                      </span>
+                    </td>
+                    <td class="text-center">
+                      {{ caravane.reservationsCount }}
+                    </td>
+                    <td class="text-center">{{ caravane.yobantesCount }}</td>
+                    <td class="d-flex align-items-center justify-content-center">
+                      <button
+                        class="btn btn-sm btn-secondary me-1"
+                        (click)="voirReservations(caravane.id)"
+                      >
+                        Voir Réservations</button
+                      ><button
+                        class="btn btn-sm btn-black me-1"
+                        (click)="voirYobantes(caravane.id)"
+                      >
+                        Voir Yobantés
+                      </button>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

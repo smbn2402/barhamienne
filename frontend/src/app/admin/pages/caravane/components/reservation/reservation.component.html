@@ -1,0 +1,202 @@
+<div class="page-inner">
+  <app-breadcrumbs
+    [title]="'Réservations'"
+    [breadcrumbs]="[
+      {
+        label: 'Caravanes',
+        url: '/admin/caravanes/' + caravane.trajet.id + '/' + caravane.moment.id
+      },
+      {
+        label:
+          caravane && caravane.trajet.libelle ? caravane.trajet.libelle : '',
+        url: '/admin/caravanes/' + caravane.trajet.id + '/' + caravane.moment.id
+      },
+      {
+        label:
+          caravane && caravane.moment.libelle ? caravane.moment.libelle : '',
+        url: '/admin/caravanes/' + caravane.trajet.id + '/' + caravane.moment.id
+      },
+      { label: 'Réservations' }
+    ]"
+  ></app-breadcrumbs>
+  <div class="row">
+    <div class="col-md-12">
+      <div class="card">
+        <div class="card-header">
+          <div class="d-flex align-items-center">
+            <h4 class="card-title col">
+              Réservations pour
+              <app-date-format [date]="caravane.date"></app-date-format>
+              {{ caravane.moment.libelle }}
+            </h4>
+            <button
+              class="btn btn-black btn-lg btn-md btn-sm btn-round ms-3"
+              data-bs-toggle="dropdown"
+              href="#"
+            >
+              <i class="fa fa-bars"></i>
+              Menu
+            </button>
+            <ul class="dropdown-menu">
+              <li>
+                <a
+                  class="dropdown-item"
+                  href="#"
+                  data-bs-toggle="modal"
+                  data-bs-target="#genericModal"
+                  ><i class="fa fa-car"></i> Ajouter une réservation
+                </a>
+                <div class="dropdown-divider"></div>
+                <a
+                  class="dropdown-item"
+                  href="#"
+                  data-bs-toggle="modal"
+                  data-bs-target="#messageModal"
+                  ><i class="fa fa-envelope"></i> Envoyer message</a
+                >
+                <div class="dropdown-divider"></div>
+                <a
+                  class="dropdown-item"
+                  href="#"
+                  (click)="exportConfirmedReservationsToPDF()"
+                >
+                  <i class="fa fa-file-pdf"></i> Exporter en PDF
+                </a>
+
+                <div class="dropdown-divider"></div>
+                <a
+                  class="dropdown-item"
+                  href="#"
+                  (click)="exportConfirmedReservations()"
+                  ><i class="fa fa-file-excel"></i> Exporter en Excel</a
+                >
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div class="card-body">
+          <!-- Modal d'ajout -->
+
+          <app-reservation-modal
+            [caravane]="caravane"
+            [isEditMode]="isEditMode"
+            [reservation]="selectedReservation"
+            (onAdd)="isEditMode ? handleUpdate($event) : handleAdd($event)"
+          ></app-reservation-modal>
+
+          <app-message-modal
+            [selectedReservations]="selectedReservations"
+            (onSend)="handleBulkMessage($event)"
+          ></app-message-modal>
+
+          <!-- Loader affiché tant que `isLoading` est vrai -->
+          <!-- <div *ngIf="isLoading" class="text-center my-4">
+            <div class="spinner-border text-danger" role="status">
+              <span class="visually-hidden">Chargement...</span>
+            </div>
+            <p class="mt-2">Chargement des réservations...</p>
+          </div> -->
+
+          <!-- Message si aucune caravane n'est disponible -->
+          <!-- <div class="row" *ngIf="!isLoading && reservations.length === 0">
+            <div class="col-12 text-center">
+              <p class="alert alert-warning">
+                Aucune réservation n'a été enrégistrée pour le moment.
+              </p>
+            </div>
+          </div> -->
+
+          <!-- Affichage des caravanes -->
+          <div class="row">
+            <div class="table-responsive">
+              <table
+                datatable
+                [dtOptions]="dtOptions"
+                [dtTrigger]="dtTrigger"
+                class="table table-bordered table-head-bg-black table-striped table-hover"
+              >
+                <thead>
+                  <tr>
+                    <th>
+                      <input
+                        type="checkbox"
+                        class="form-check-input border-1 border-dark"
+                        (change)="selectAll($event)"
+                      />
+                    </th>
+                    <th>#</th>
+                    <th>Prénom</th>
+                    <th>Nom</th>
+                    <th>Numéro</th>
+                    <th>Point de départ</th>
+                    <th>Point d'arrivée</th>
+                    <th>Statut</th>
+                    <th>Date</th>
+                    <th style="width: 10%">Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let reservation of reservations; let i = index">
+                    <td>
+                      <input
+                        type="checkbox"
+                        class="form-check-input border-1 border-dark"
+                        (change)="toggleSelection(reservation, $event)"
+                        [checked]="selectedReservations.includes(reservation)"
+                      />
+                    </td>
+                    <td>{{ i + 1 }}</td>
+                    <td>{{ reservation.client.prenom }}</td>
+                    <td>{{ reservation.client.nom }}</td>
+                    <td>
+                      <a
+                        [href]="'tel:' + reservation.client.tel"
+                        class="badge bg-success"
+                        >{{ reservation.client.tel }}</a
+                      >
+                    </td>
+                    <td>
+                      {{ reservation.departMoment.depart.libelle }} ({{
+                        reservation.departMoment.heureDepart
+                      }})
+                    </td>
+                    <td>{{ reservation.arrivee.libelle }}</td>
+                    <td>
+                      <span
+                        class="badge"
+                        [ngClass]="{
+                          'bg-success': reservation.statut === 'CONFIRMEE',
+                          'bg-warning': reservation.statut === 'EN_ATTENTE',
+                          'bg-danger': reservation.statut === 'ANNULEE'
+                        }"
+                      >
+                        {{ reservation.statut }}
+                      </span>
+                    </td>
+                    <td>{{ reservation.date }}</td>
+                    <td>
+                      <div class="d-flex justify-content-center">
+                        <button
+                          class="btn btn-sm btn-warning me-1"
+                          (click)="selecteReservation(reservation)"
+                        >
+                          <i class="fa fa-edit"></i>
+                        </button>
+                        <button
+                          class="btn btn-sm btn-danger"
+                          (click)="handleDelete(reservation)"
+                        >
+                          <i class="fa fa-trash"></i>
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

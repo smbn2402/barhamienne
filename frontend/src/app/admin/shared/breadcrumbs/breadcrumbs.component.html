@@ -1,0 +1,26 @@
+<div class="page-header">
+  <h3 class="fw-bold mb-3">{{ title }}</h3>
+  <ul class="breadcrumbs mb-3">
+    <li class="nav-home">
+      <a routerLink="/dashboard">
+        <i class="icon-home"></i>
+      </a>
+    </li>
+    <li class="separator" *ngIf="breadcrumbs.length > 0">
+      <i class="icon-arrow-right"></i>
+    </li>
+    <ng-container *ngFor="let crumb of breadcrumbs; let last = last">
+      <li class="nav-item" *ngIf="crumb.url">
+        <a [routerLink]="crumb.url">
+          <i *ngIf="crumb.icon" class="{{ crumb.icon }}"></i> {{ crumb.label }}
+        </a>
+      </li>
+      <li class="nav-item" *ngIf="!crumb.url">
+        {{ crumb.label }}
+      </li>
+      <li class="separator" *ngIf="!last">
+        <i class="icon-arrow-right"></i>
+      </li>
+    </ng-container>
+  </ul>
+</div>

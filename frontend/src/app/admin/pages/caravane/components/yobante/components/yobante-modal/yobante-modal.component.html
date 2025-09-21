@@ -1,0 +1,208 @@
+<ng-template #yobanteModal>
+    <form [formGroup]="form" (ngSubmit)="onSubmit()">
+      <!-- Étape 1 : Expéditeur -->
+      <div formGroupName="expediteur">
+        <div class="mb-3">
+          <label for="firstName" class="form-label">Prénom</label>
+          <input
+            type="text"
+            class="form-control"
+            id="firstName"
+            formControlName="firstName"
+            placeholder="Entrer le prénom de l'expéditeur"
+          />
+          <small
+            class="text-danger"
+            *ngIf="
+              form.get('expediteur.firstName')?.invalid &&
+              form.get('expediteur.firstName')?.touched
+            "
+          >
+            ⚠ Le prénom est obligatoire et doit contenir au moins 2 caractères.
+          </small>
+        </div>
+        <div class="mb-3">
+          <label for="lastName" class="form-label">Nom</label>
+          <input
+            type="text"
+            class="form-control"
+            id="lastName"
+            formControlName="lastName"
+            placeholder="Entrer le nom de l'expéditeur"
+          />
+          <small
+            class="text-danger"
+            *ngIf="
+              form.get('expediteur.lastName')?.invalid &&
+              form.get('expediteur.lastName')?.touched
+            "
+          >
+            ⚠ Le nom est obligatoire et doit contenir au moins 2 caractères.
+          </small>
+        </div>
+        <div class="mb-3">
+          <label for="tel" class="form-label">Téléphone</label>
+          <input
+            type="text"
+            class="form-control"
+            id="tel"
+            formControlName="tel"
+            placeholder="Téléphone expéditeur"
+          />
+          <small
+            class="text-danger"
+            *ngIf="
+              form.get('expediteur.tel')?.hasError('required') &&
+              form.get('expediteur.tel')?.touched
+            "
+          >
+            ⚠ Le numéro de téléphone est obligatoire.
+          </small>
+          <small
+            class="text-danger"
+            *ngIf="
+              form.get('expediteur.tel')?.hasError('pattern') &&
+              form.get('expediteur.tel')?.touched
+            "
+          >
+            ⚠ Format invalide. Exemple valide : 771234567.
+          </small>
+        </div>
+      </div>
+
+      <!-- Étape 2 : Colis -->
+      <div formGroupName="colis">
+        <div class="mb-3">
+          <label for="type_colis" class="form-label">Type de colis</label>
+          <input
+            type="text"
+            class="form-control"
+            id="type_colis"
+            formControlName="type_colis"
+            placeholder="Ex: Téléphone, Ordinateur..."
+          />
+          <small
+            class="text-danger"
+            *ngIf="
+              form.get('colis.type_colis')?.invalid &&
+              form.get('colis.type_colis')?.touched
+            "
+          >
+            ⚠ La nature du colis est obligatoire et doit contenir au moins 2
+            caractères.
+          </small>
+        </div>
+        <div class="mb-3">
+          <label for="depot" class="form-label">Lieu de dépôt</label>
+          <select id="depot" class="form-select" formControlName="depot">
+            <option value="">Choisissez votre lieu de dépôt</option>
+            <option *ngFor="let item of departMoments" [value]="item.id">
+              {{ item.depart.libelle }} ({{ item.heureDepart }})
+            </option>
+          </select>
+          <small
+            class="text-danger"
+            *ngIf="
+              form.get('colis.depot')?.invalid && form.get('colis.depot')?.touched
+            "
+          >
+            ⚠ Veuillez choisir votre lieu de dépôt.
+          </small>
+        </div>
+        <div class="mb-3">
+          <label for="retrait" class="form-label">Lieu de retrait</label>
+          <input
+            type="text"
+            class="form-control"
+            id="retrait"
+            formControlName="retrait"
+          />
+        </div>
+      </div>
+
+      <!-- Étape 3 : Destinataire -->
+      <div formGroupName="destinataire">
+        <div class="mb-3">
+          <label for="firstName" class="form-label">Prénom</label>
+          <input
+            type="text"
+            class="form-control"
+            id="firstName"
+            formControlName="firstName"
+            placeholder="Prénom du destinataire"
+          />
+          <small
+            class="text-danger"
+            *ngIf="
+              form.get('destinataire.firstName')?.invalid &&
+              form.get('destinataire.firstName')?.touched
+            "
+          >
+            ⚠ Le prénom est obligatoire et doit contenir au moins 2 caractères.
+          </small>
+        </div>
+        <div class="mb-3">
+          <label for="lastName" class="form-label">Nom</label>
+          <input
+            type="text"
+            class="form-control"
+            id="lastName"
+            formControlName="lastName"
+            placeholder="Nom du destinataire"
+          />
+          <small
+            class="text-danger"
+            *ngIf="
+              form.get('destinataire.lastName')?.invalid &&
+              form.get('destinataire.lastName')?.touched
+            "
+          >
+            ⚠ Le nom est obligatoire et doit contenir au moins 2 caractères.
+          </small>
+        </div>
+        <div class="mb-3">
+          <label for="tel" class="form-label">Téléphone</label>
+          <input
+            type="text"
+            class="form-control"
+            id="tel"
+            formControlName="tel"
+            placeholder="Téléphone du destinataire"
+          />
+          <small
+            class="text-danger"
+            *ngIf="
+              form.get('destinataire.tel')?.hasError('required') &&
+              form.get('destinataire.tel')?.touched
+            "
+          >
+            ⚠ Le numéro de téléphone est obligatoire.
+          </small>
+          <small
+            class="text-danger"
+            *ngIf="
+              form.get('destinataire.tel')?.hasError('pattern') &&
+              form.get('destinataire.tel')?.touched
+            "
+          >
+            ⚠ Format invalide. Exemple valide : 771234567.
+          </small>
+        </div>
+      </div>
+    </form>
+  </ng-template>
+
+  <app-generic-modal
+    [modalId]="'genericModal'"
+    [title]="isEditMode ? 'Modifier un Yobanté' : 'Ajouter un Yobanté'"
+    [description]="
+      isEditMode
+        ? 'Modifier les informations du yobanté'
+        : 'Entrez les informations du yobanté'
+    "
+    [button]="isEditMode ? 'Mettre à jour' : 'Enregistrer'"
+    [formTemplate]="yobanteModal"
+    [isFormValid]="formValid"
+    (confirm)="onSubmit()"
+    (close)="closeModal()"
+  ></app-generic-modal>

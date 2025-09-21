@@ -1,0 +1,38 @@
+<ng-template #MomentModal>
+  <form [formGroup]="form" (ngSubmit)="onSubmit()">
+    <div class="mb-3">
+      <label for="libelle" class="form-label">Libellé</label>
+      <input
+        type="text"
+        class="form-control"
+        id="libelle"
+        formControlName="libelle"
+        placeholder="Entrer le libellé du moment"
+      />
+      <small
+        class="text-danger"
+        *ngIf="form.get('libelle')?.invalid && form.get('libelle')?.touched"
+      >
+        ⚠ Le libellé est obligatoire (min 2 caractères).
+      </small>
+    </div>
+
+  </form>
+</ng-template>
+
+<app-generic-modal
+  [modalId]="'genericModal'"
+  [title]="
+    isEditMode ? 'Modifier un moment' : 'Ajouter un moment'
+  "
+  [description]="
+    isEditMode
+      ? 'Modifier les informations du point de'
+      : 'Entrez les informations du moment'
+  "
+  [button]="isEditMode ? 'Mettre à jour' : 'Enregistrer'"
+  [formTemplate]="MomentModal"
+  [isFormValid]="formValid"
+  (confirm)="onSubmit()"
+  (close)="closeModal()"
+></app-generic-modal>

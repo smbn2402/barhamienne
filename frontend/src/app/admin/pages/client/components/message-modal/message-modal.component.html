@@ -1,0 +1,68 @@
+<!-- Modal d'envoi de message -->
+<div
+  class="modal fade"
+  id="messageModal"
+  data-bs-backdrop="static"
+  data-bs-keyboard="false"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="messageModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-dialog-centered modal-md" role="document">
+    <div class="modal-content">
+      <div class="modal-body p-0">
+        <div class="card mb-0">
+          <div class="card-header text-left">
+            <h3 class="fw-bolder text-info">Envoyer un message</h3>
+            <p class="mb-0">
+              Rédigez un message à envoyer aux clients sélectionnés
+            </p>
+          </div>
+          <div class="card-body">
+            <form #messageForm="ngForm">
+              <label for="message">Message</label>
+              <div class="input-group mb-3">
+                <textarea
+                  [(ngModel)]="messageContent"
+                  name="message"
+                  class="form-control"
+                  rows="5"
+                  required
+                  placeholder="Tapez ici le message à envoyer"
+                ></textarea>
+              </div>
+              <div
+                *ngIf="
+                  messageForm.controls['message']?.invalid &&
+                  messageForm.controls['message']?.touched
+                "
+                class="text-danger"
+              >
+                <small>⚠ Le message ne peut pas être vide.</small>
+              </div>
+            </form>
+          </div>
+          <div class="card-footer">
+            <button
+              type="button"
+              class="btn btn-danger"
+              data-bs-dismiss="modal"
+              (click)="closeModal()"
+            >
+              Fermer
+            </button>
+            <button
+              type="button"
+              class="btn btn-primary float-end"
+              [disabled]="messageForm.invalid"
+              (click)="sendMessage()"
+            >
+              Envoyer
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

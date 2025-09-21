@@ -1,0 +1,73 @@
+@import url('./../../../../../../../../../../../public/css/style.css');
+
+.form-step {
+    display: none;
+  }
+
+  .form-step.active {
+    display: block;
+  }
+
+  .step-icon {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 0 10px;
+    color: gray;
+    font-size: 15px;
+  }
+
+  .step-icon i {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: lightgray;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+  }
+
+  .step-icon.active {
+    color: #ab0808;
+  }
+
+  .step-icon.active i {
+    background: #ab0808;
+    color: white;
+  }
+
+  .step-wrapper {
+    text-align: center;
+    position: relative;
+  }
+
+  .step-line {
+    flex-grow: 1;
+    height: 4px;
+    background-color: lightgray;
+  }
+
+  .step-line.active {
+    background-color: red;
+  }
+
+/* Augmenter la taille des boutons radio */
+.form-check-input {
+    transform: scale(1.3);
+    margin-top: 9px;
+    border: 1px solid black;
+  }
+
+.paiement{
+   margin-top: 9px;
+}
+
+.bg-om{
+  background-color: rgb(255, 115, 0);
+  color: white;
+}
+
+.border-om{
+  border: 2px solid rgb(255, 115, 0);
+}

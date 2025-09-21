@@ -1,0 +1,40 @@
+<ng-template #DepartModal>
+  <form [formGroup]="form" (ngSubmit)="onSubmit()">
+     <div class="mb-3">
+      <label for="libelle" class="form-label">Libellé</label>
+      <input
+        type="text"
+        class="form-control"
+        id="libelle"
+        formControlName="libelle"
+        placeholder="Entrer le libellé du point de départ"
+      />
+      <small
+        class="text-danger"
+        *ngIf="
+          form.get('libelle')?.invalid && form.get('libelle')?.touched
+        "
+      >
+        ⚠ Le libellé du point de départ est obligatoire et doit contenir au moins 2
+        caractères.
+      </small>
+    </div>
+  </form>
+</ng-template>
+
+<app-generic-modal
+  [modalId]="'genericModal'"
+  [title]="
+    isEditMode ? 'Modifier un point de départ' : 'Ajouter un point de départ'
+  "
+  [description]="
+    isEditMode
+      ? 'Modifier les informations du point de'
+      : 'Entrez les informations du point de départ'
+  "
+  [button]="isEditMode ? 'Mettre à jour' : 'Enregistrer'"
+  [formTemplate]="DepartModal"
+  [isFormValid]="formValid"
+  (confirm)="addDepartMoment()"
+  (close)="closeModal()"
+></app-generic-modal>

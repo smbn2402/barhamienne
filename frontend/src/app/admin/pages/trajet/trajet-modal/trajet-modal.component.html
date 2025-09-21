@@ -1,0 +1,74 @@
+<ng-template #TrajetModal>
+  <form [formGroup]="form" (ngSubmit)="onSubmit()">
+    <div class="mb-3">
+      <label for="libelle" class="form-label">Libellé (Français)</label>
+      <input
+        type="text"
+        class="form-control"
+        id="libelle"
+        formControlName="libelle"
+        placeholder="Entrer le libellé du point de départ"
+      />
+      <small
+        class="text-danger"
+        *ngIf="form.get('libelle')?.invalid && form.get('libelle')?.touched"
+      >
+        ⚠ Le libellé est obligatoire (min 2 caractères).
+      </small>
+    </div>
+
+    <div class="mb-3">
+      <label for="libelleWolof" class="form-label">Libellé (Wolof)</label>
+      <input
+        type="text"
+        class="form-control"
+        id="libelleWolof"
+        formControlName="libelleWolof"
+        placeholder="Jëfandikoo turu bopp"
+      />
+      <small
+        class="text-danger"
+        *ngIf="
+          form.get('libelleWolof')?.invalid && form.get('libelleWolof')?.touched
+        "
+      >
+        ⚠ Le libellé Wolof est requis (min 2 caractères).
+      </small>
+    </div>
+
+    <div class="mb-3">
+      <label for="prix" class="form-label">Prix (FCFA)</label>
+      <input
+        type="number"
+        class="form-control"
+        id="prix"
+        formControlName="prix"
+        placeholder="Ex: 2500"
+        min="0"
+      />
+      <small
+        class="text-danger"
+        *ngIf="form.get('prix')?.invalid && form.get('prix')?.touched"
+      >
+        ⚠ Le prix est requis et doit être supérieur ou égal à 0.
+      </small>
+    </div>
+  </form>
+</ng-template>
+
+<app-generic-modal
+  [modalId]="'genericModal'"
+  [title]="
+    isEditMode ? 'Modifier un point de départ' : 'Ajouter un point de départ'
+  "
+  [description]="
+    isEditMode
+      ? 'Modifier les informations du point de'
+      : 'Entrez les informations du point de départ'
+  "
+  [button]="isEditMode ? 'Mettre à jour' : 'Enregistrer'"
+  [formTemplate]="TrajetModal"
+  [isFormValid]="formValid"
+  (confirm)="onSubmit()"
+  (close)="closeModal()"
+></app-generic-modal>
