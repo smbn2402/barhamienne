@@ -27,6 +27,28 @@ jobs:
         working-directory: frontend
         run: npm run build -- --configuration production
 
+      # --------- Build Laravel ----------
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2'
+          extensions: mbstring, xml, ctype, iconv, intl, pdo_sqlite, dom, filter, gd, json, libxml
+          
+      - name: Install Composer
+        working-directory: backend
+        run: |
+          php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
+          php composer-setup.php
+          php -r "unlink('composer-setup.php');"
+          
+      - name: Install Laravel Dependencies
+        working-directory: backend
+        run: |
+          php composer.phar install --no-dev --optimize-autoloader
+          php artisan config:cache
+          php artisan route:cache
+          php artisan view:cache
+
       # --------- Deploy Angular to cPanel ----------
       - name: Deploy Angular via FTP
         uses: SamKirkland/FTP-Deploy-Action@v4.3.6
