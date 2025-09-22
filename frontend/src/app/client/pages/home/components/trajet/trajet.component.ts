@@ -1,4 +1,4 @@
-import { Trajet } from "./../../../../../core/interfaces/trajet";
+import { Trajet } from "../../../../../core/interfaces/trajet";
 import { Component, ViewEncapsulation } from "@angular/core";
 import { TrajetService } from "../../../../../core/services/trajet/trajet.service";
 import { CommonModule } from "@angular/common";

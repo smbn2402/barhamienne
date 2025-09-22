@@ -1,4 +1,4 @@
-import { SmsService } from './../../../core/services/sms/sms.service';
+import { SmsService } from '../../../core/services/sms/sms.service';
 import { Component, ViewChild } from '@angular/core';
 import { DataTableDirective, DataTablesModule } from 'angular-datatables';
 import { Config } from 'datatables.net';
@@ -13,7 +13,7 @@ import { SharedService } from '../../../core/services/shared/shared.service';
 import { CommonModule } from '@angular/common';
 import { BreadcrumbsComponent } from '../../shared/breadcrumbs/breadcrumbs.component';
 import { ClientModalComponent } from './components/client-modal/client-modal.component';
-import { MessageModalComponent } from '../client/components/message-modal/message-modal.component';
+import { MessageModalComponent } from './components/message-modal/message-modal.component';
 
 @Component({
   selector: 'app-client',

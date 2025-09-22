@@ -1,4 +1,4 @@
-import { SmsService } from './../../../core/services/sms/sms.service';
+import { SmsService } from '../../../core/services/sms/sms.service';
 import { Component, ViewChild } from '@angular/core';
 import { DataTableDirective, DataTablesModule } from 'angular-datatables';
 import { Subject, tap, catchError } from 'rxjs';
