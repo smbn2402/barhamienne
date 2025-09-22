@@ -65,7 +65,7 @@ jobs:
           server: ${{ secrets.FTP_SERVER }}
           username: ${{ secrets.FTP_USERNAME }}
           password: ${{ secrets.FTP_PASSWORD }}
-          local-dir: frontend/dist/frontend/
+          local-dir: frontend/dist/frontend/browser/
           server-dir: public_html/
 
       # --------- Deploy Laravel backend ----------
