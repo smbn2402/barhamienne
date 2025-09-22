@@ -29,7 +29,7 @@ jobs:
 
       # --------- Deploy Angular to cPanel ----------
       - name: Deploy Angular via FTP
-        uses: SamKirkland/FTP-Deploy-Action@4.3.4
+        uses: SamKirkland/FTP-Deploy-Action@4.3.6
         with:
           server: ${{ secrets.FTP_SERVER }}
           username: ${{ secrets.FTP_USERNAME }}
@@ -39,7 +39,7 @@ jobs:
 
       # --------- Deploy Laravel backend ----------
       - name: Deploy Laravel via FTP
-        uses: SamKirkland/FTP-Deploy-Action@4.3.4
+        uses: SamKirkland/FTP-Deploy-Action@4.3.6
         with:
           server: ${{ secrets.FTP_SERVER }}
           username: ${{ secrets.FTP_USERNAME }}
