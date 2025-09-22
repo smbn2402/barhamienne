@@ -49,11 +49,14 @@ jobs:
       - name: Create Laravel .env file and generate key
         working-directory: backend
         run: |
-          echo "${{ secrets.LARAVEL_ENV }}" > .env
-          php artisan key:generate
-          php artisan config:cache
-          php artisan route:cache
-          php artisan view:cache
+          echo -e "${LARAVEL_ENV}" > .env
+          cat .env
+          php artisan key:generate --force
+          php artisan config:cache --force
+          php artisan route:cache --force
+          php artisan view:cache --force
+        env:
+          LARAVEL_ENV: ${{ secrets.LARAVEL_ENV }}
 
       # --------- Deploy Angular to cPanel ----------
       - name: Deploy Angular via FTP
