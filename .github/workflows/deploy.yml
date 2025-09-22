@@ -34,7 +34,7 @@ jobs:
           server: ${{ secrets.FTP_SERVER }}
           username: ${{ secrets.FTP_USERNAME }}
           password: ${{ secrets.FTP_PASSWORD }}
-          local-dir: frontend/dist/mon-app/
+          local-dir: frontend/dist/frontend/
           server-dir: public_html/barhamienne/   # Modifié pour déployer dans un sous-dossier
 
       # --------- Deploy Laravel backend ----------
